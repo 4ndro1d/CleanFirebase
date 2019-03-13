@@ -1,7 +1,9 @@
-package android.firebase.authentication
+package android.firebase.auth.view
 
 import android.app.Activity
 import android.content.Intent
+import android.firebase.auth.presentation.AuthPresenter
+import android.firebase.auth.presentation.AuthenticationView
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,9 +13,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import org.koin.android.ext.android.inject
 
-class AuthenticationActivity : AppCompatActivity(), AuthenticationView {
+class AuthActivity : AppCompatActivity(), AuthenticationView {
 
-    private val presenter: AuthenticationPresenter by inject()
+    private val presenter: AuthPresenter by inject()
 
     private var user: FirebaseUser? = null
 
@@ -36,6 +38,10 @@ class AuthenticationActivity : AppCompatActivity(), AuthenticationView {
                 }
             }
         }
+    }
+
+    override fun userAlreadyLoggedIn() {
+        Toast.makeText(this, "User is already logged in", Toast.LENGTH_SHORT).show()
     }
 
     override fun startLogin() {

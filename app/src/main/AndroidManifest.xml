@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".authentication.AuthenticationActivity" />
+        <activity android:name=".auth.view.AuthActivity" />
     </application>
 
 </manifest>

@@ -2,7 +2,7 @@ package android.firebase.view
 
 import android.content.Intent
 import android.firebase.R
-import android.firebase.authentication.AuthenticationActivity
+import android.firebase.auth.view.AuthActivity
 import android.firebase.presentation.MainActivityPresenter
 import android.firebase.presentation.MainActivityView
 import android.os.Bundle
@@ -21,6 +21,6 @@ class MainActivity : AppCompatActivity(), MainActivityView {
     }
 
     override fun doSomething() {
-        startActivity(Intent(this, AuthenticationActivity::class.java))
+        startActivity(Intent(this, AuthActivity::class.java))
     }
 }
