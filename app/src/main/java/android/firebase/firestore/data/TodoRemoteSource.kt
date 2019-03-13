@@ -8,5 +8,5 @@ interface TodoRemoteSource {
 
     fun addTodo(title: String, done: Boolean)
 
-    fun updateTodo(title: String, done: Boolean)
+    fun updateTodo(id: String, title: String, done: Boolean)
 }

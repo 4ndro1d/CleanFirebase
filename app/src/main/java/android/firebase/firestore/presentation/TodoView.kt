@@ -4,4 +4,5 @@ import android.firebase.common.view.BaseView
 
 interface TodoView : BaseView {
 
+    fun showInputDialog()
 }

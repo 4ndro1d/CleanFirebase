@@ -29,8 +29,15 @@ class TodoRemoteSourceImpl(
             }
     }
 
-    override fun updateTodo(title: String, done: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun updateTodo(id: String, title: String, done: Boolean) {
+        val todo = HashMap<String, Any>().apply {
+            set("title", title)
+            set("done", done)
+        }
+
+        firestore.collection(COLLECTION_TODOS)
+            .document(id)
+            .set(todo)
     }
 
     companion object {

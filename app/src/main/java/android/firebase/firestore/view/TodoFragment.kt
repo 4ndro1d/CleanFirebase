@@ -6,11 +6,14 @@ import android.firebase.firestore.presentation.TodoPresenter
 import android.firebase.firestore.presentation.TodoView
 import android.firebase.firestore.remote.TodoRemoteSourceImpl.Companion.COLLECTION_TODOS
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,11 +41,12 @@ class TodoFragment : Fragment(), TodoView, LifecycleOwner {
         initAdapter()
 
         addTodoButton.setOnClickListener {
-            presenter.addTodo()
+            presenter.addTodoButtonClicked()
         }
     }
 
     private fun initAdapter() {
+        //TODO FirebaseUI won't work with clean :(
         val query = db
             .collection(COLLECTION_TODOS)
             .limit(50)
@@ -65,6 +69,22 @@ class TodoFragment : Fragment(), TodoView, LifecycleOwner {
         todoList.layoutManager = LinearLayoutManager(context)
     }
 
+    override fun showInputDialog() {
+        context?.let {
+            AlertDialog.Builder(it).apply {
+                setTitle("Title")
+
+                val input = EditText(context)
+                input.inputType = InputType.TYPE_CLASS_TEXT
+                setView(input)
+
+                setPositiveButton("OK") { _, _ -> presenter.addTodo(input.text.toString()) }
+                setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                show()
+            }
+        }
+    }
+
     //TODO use LayoutContainer
     inner class TodoHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
@@ -74,6 +94,7 @@ class TodoFragment : Fragment(), TodoView, LifecycleOwner {
         fun bind(todo: Todo) {
             title.text = todo.title
             checkBox.isChecked = todo.done
+            checkBox.setOnCheckedChangeListener { buttonView, isChecked -> presenter.todoChecked(todo) }
         }
     }
 }

@@ -14,7 +14,7 @@ class TodoRepositoryImpl(
         remoteSource.addTodo(title, done)
     }
 
-    override fun updateTodo(title: String, done: Boolean) {
-        remoteSource.updateTodo(title, done)
+    override fun updateTodo(id: String, title: String, done: Boolean) {
+        remoteSource.updateTodo(id, title, done)
     }
 }

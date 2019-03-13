@@ -4,6 +4,7 @@ import android.firebase.firestore.data.TodoRemoteSource
 import android.firebase.firestore.data.TodoRepositoryImpl
 import android.firebase.firestore.domain.AddTodoUseCase
 import android.firebase.firestore.domain.TodoRepository
+import android.firebase.firestore.domain.UpdateTodoUseCase
 import android.firebase.firestore.presentation.TodoPresenter
 import android.firebase.firestore.remote.TodoRemoteSourceImpl
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,5 +16,6 @@ val fireStoreModule = module {
     single<TodoRemoteSource> { TodoRemoteSourceImpl(get()) }
     single<TodoRepository> { TodoRepositoryImpl(get()) }
     single { AddTodoUseCase(get()) }
-    single { TodoPresenter(get()) }
+    single { UpdateTodoUseCase(get()) }
+    single { TodoPresenter(get(), get()) }
 }
