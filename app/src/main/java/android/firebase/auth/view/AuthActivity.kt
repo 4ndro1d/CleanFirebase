@@ -42,6 +42,7 @@ class AuthActivity : AppCompatActivity(), AuthenticationView {
 
     override fun userAlreadyLoggedIn() {
         Toast.makeText(this, "User is already logged in", Toast.LENGTH_SHORT).show()
+        finish()
     }
 
     override fun startLogin() {
