@@ -1,5 +1,6 @@
-package android.firebase.firestore.domain
+package android.firebase.firestore.domain.usecase
 
+import android.firebase.firestore.domain.repository.TodoRepository
 import com.mediasaturn.common.domain.NonArgUseCase
 
 class LoadTodosUseCase(

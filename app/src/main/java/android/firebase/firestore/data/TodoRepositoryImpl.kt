@@ -1,7 +1,8 @@
 package android.firebase.firestore.data
 
-import android.firebase.firestore.domain.TodoRepository
 import android.firebase.firestore.domain.model.Todo
+import android.firebase.firestore.domain.repository.TodoRepository
+import io.reactivex.Single
 
 class TodoRepositoryImpl(
     private val remoteSource: TodoRemoteSource
@@ -10,11 +11,10 @@ class TodoRepositoryImpl(
     override fun loadTodos(): List<Todo> =
         remoteSource.loadTodos()
 
-    override fun addTodo(title: String, done: Boolean) {
-        remoteSource.addTodo(title, done)
-    }
+    override fun addTodo(todo: Todo): Single<Todo> =
+        remoteSource.addTodo(todo)
 
-    override fun updateTodo(id: String, title: String, done: Boolean) {
-        remoteSource.updateTodo(id, title, done)
+    override fun updateTodo(todo: Todo) {
+        remoteSource.updateTodo(todo)
     }
 }

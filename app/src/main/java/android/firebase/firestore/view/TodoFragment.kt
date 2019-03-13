@@ -94,7 +94,7 @@ class TodoFragment : Fragment(), TodoView, LifecycleOwner {
         fun bind(todo: Todo) {
             title.text = todo.title
             checkBox.isChecked = todo.done
-            checkBox.setOnCheckedChangeListener { buttonView, isChecked -> presenter.todoChecked(todo) }
+            checkBox.setOnCheckedChangeListener { _, _ -> presenter.todoChecked(todo) }
         }
     }
 }

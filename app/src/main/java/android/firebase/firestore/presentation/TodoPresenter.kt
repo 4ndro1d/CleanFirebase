@@ -1,9 +1,14 @@
 package android.firebase.firestore.presentation
 
 import android.firebase.common.presentation.BasePresenter
-import android.firebase.firestore.domain.AddTodoUseCase
-import android.firebase.firestore.domain.UpdateTodoUseCase
 import android.firebase.firestore.domain.model.Todo
+import android.firebase.firestore.domain.usecase.AddTodoUseCase
+import android.firebase.firestore.domain.usecase.UpdateTodoUseCase
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 class TodoPresenter(
     private val addTodoUseCase: AddTodoUseCase,
@@ -21,10 +26,16 @@ class TodoPresenter(
     }
 
     fun addTodo(title: String) {
-        addTodoUseCase.execute(AddTodoUseCase.Params(title, false))
+        disposables += addTodoUseCase.execute(AddTodoUseCase.Params(Todo("", title, false)))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = { Timber.d("$it") },
+                onError = Timber::e
+            )
     }
 
     fun todoChecked(todo: Todo) {
-        updateTodoUseCase.execute(UpdateTodoUseCase.Params(todo.id, todo.title, todo.done))
+        updateTodoUseCase.execute(UpdateTodoUseCase.Params(todo))
     }
 }

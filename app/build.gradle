@@ -52,6 +52,8 @@ dependencies {
     implementation 'com.androidhuman.rxfirebase2:firebase-core:16.0.5.0'
     implementation 'com.androidhuman.rxfirebase2:firebase-auth:16.1.0.0'
     implementation 'com.androidhuman.rxfirebase2:firebase-auth-kotlin:16.1.0.0'
+    implementation 'com.androidhuman.rxfirebase2:firebase-firestore:17.1.5.0'
+    implementation 'com.androidhuman.rxfirebase2:firebase-firestore-kotlin:17.1.5.0'
 
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
     implementation 'com.firebaseui:firebase-ui-firestore:4.3.1'

@@ -1,9 +1,9 @@
-package android.firebase.firestore.data
+package android.firebase.firestore.domain.repository
 
 import android.firebase.firestore.domain.model.Todo
 import io.reactivex.Single
 
-interface TodoRemoteSource {
+interface TodoRepository {
 
     fun loadTodos(): List<Todo>
 

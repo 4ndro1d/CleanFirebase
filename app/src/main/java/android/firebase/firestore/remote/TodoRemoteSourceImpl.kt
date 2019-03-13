@@ -2,8 +2,8 @@ package android.firebase.firestore.remote
 
 import android.firebase.firestore.data.TodoRemoteSource
 import android.firebase.firestore.domain.model.Todo
+import com.androidhuman.rxfirebase2.firestore.RxFirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestore
-import timber.log.Timber
 
 class TodoRemoteSourceImpl(
     private val firestore: FirebaseFirestore
@@ -13,30 +13,15 @@ class TodoRemoteSourceImpl(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun addTodo(title: String, done: Boolean) {
-        val todo = HashMap<String, Any>().apply {
-            set("title", title)
-            set("done", done)
-        }
-
-        firestore.collection(COLLECTION_TODOS)
-            .add(todo)
-            .addOnSuccessListener { documentReference ->
-                Timber.d("DocumentSnapshot added with ID: ${documentReference.id}")
+    override fun addTodo(todo: Todo) =
+        RxFirebaseFirestore.add(firestore.collection(COLLECTION_TODOS), todo)
+            .map {
+                Todo(it.id, todo.title, todo.done)
             }
-            .addOnFailureListener { e ->
-                Timber.w(e, "Error adding document")
-            }
-    }
 
-    override fun updateTodo(id: String, title: String, done: Boolean) {
-        val todo = HashMap<String, Any>().apply {
-            set("title", title)
-            set("done", done)
-        }
-
+    override fun updateTodo(todo: Todo) {
         firestore.collection(COLLECTION_TODOS)
-            .document(id)
+            .document(todo.id)
             .set(todo)
     }
 
