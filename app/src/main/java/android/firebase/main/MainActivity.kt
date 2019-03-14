@@ -2,7 +2,7 @@ package android.firebase.main
 
 import android.content.Intent
 import android.firebase.R
-import android.firebase.auth.view.AuthActivity
+import android.firebase.feature.auth.view.AuthActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/todoListFragment"
-        android:name="android.firebase.firestore.view.TodoFragment"
+        android:name="android.firebase.feature.lists.view.TodoFragment"
         android:label="Todos" />
 
 </navigation>
