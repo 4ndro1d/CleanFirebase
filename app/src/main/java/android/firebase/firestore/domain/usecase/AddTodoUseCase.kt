@@ -3,11 +3,11 @@ package android.firebase.firestore.domain.usecase
 import android.firebase.firestore.domain.model.Todo
 import android.firebase.firestore.domain.repository.TodoRepository
 import com.mediasaturn.common.domain.UseCase
-import io.reactivex.Single
+import io.reactivex.Completable
 
 class AddTodoUseCase(
     private val repository: TodoRepository
-) : UseCase<AddTodoUseCase.Params, Single<Todo>> {
+) : UseCase<AddTodoUseCase.Params, Completable> {
 
     override fun execute(param: Params) =
         repository.addTodo(param.todo)

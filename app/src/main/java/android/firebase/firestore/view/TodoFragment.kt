@@ -4,7 +4,7 @@ import android.firebase.R
 import android.firebase.firestore.domain.model.Todo
 import android.firebase.firestore.presentation.TodoPresenter
 import android.firebase.firestore.presentation.TodoView
-import android.firebase.firestore.remote.TodoRemoteSourceImpl.Companion.COLLECTION_TODOS
+import android.firebase.firestore.remote.repository.TodoRemoteSourceImpl.Companion.COLLECTION_TODOS
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -28,7 +28,7 @@ class TodoFragment : Fragment(), TodoView, LifecycleOwner {
 
     private val presenter: TodoPresenter by inject()
 
-    private val db = FirebaseFirestore.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(android.firebase.R.layout.fragment_todo_list, container, false)
@@ -47,7 +47,7 @@ class TodoFragment : Fragment(), TodoView, LifecycleOwner {
 
     private fun initAdapter() {
         //TODO FirebaseUI won't work with clean :(
-        val query = db
+        val query = firestore
             .collection(COLLECTION_TODOS)
             .limit(50)
 
@@ -94,7 +94,7 @@ class TodoFragment : Fragment(), TodoView, LifecycleOwner {
         fun bind(todo: Todo) {
             title.text = todo.title
             checkBox.isChecked = todo.done
-            checkBox.setOnCheckedChangeListener { _, _ -> presenter.todoChecked(todo) }
+            checkBox.setOnCheckedChangeListener { _, checked -> presenter.updateTodo(todo.copy(done = checked)) }
         }
     }
 }
