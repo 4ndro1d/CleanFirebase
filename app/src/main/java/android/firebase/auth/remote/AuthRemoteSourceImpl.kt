@@ -7,6 +7,6 @@ class AuthRemoteSourceImpl(
     private val firebaseAuth: FirebaseAuth
 ) : AuthRemoteSource {
 
-    override fun isUserAuthenticated(): Boolean =
-        firebaseAuth.currentUser != null
+    override fun loadCurrentUser() =
+        firebaseAuth.currentUser
 }

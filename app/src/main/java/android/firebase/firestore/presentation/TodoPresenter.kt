@@ -1,5 +1,6 @@
 package android.firebase.firestore.presentation
 
+import android.firebase.auth.domain.LoadCurrentUserUseCase
 import android.firebase.common.presentation.BasePresenter
 import android.firebase.firestore.domain.model.Todo
 import android.firebase.firestore.domain.usecase.AddTodoUseCase
@@ -10,7 +11,8 @@ import io.reactivex.schedulers.Schedulers
 
 class TodoPresenter(
     private val addTodoUseCase: AddTodoUseCase,
-    private val updateTodoUseCase: UpdateTodoUseCase
+    private val updateTodoUseCase: UpdateTodoUseCase,
+    private val loadCurrentUserUseCase: LoadCurrentUserUseCase
 ) : BasePresenter<TodoView> {
 
     private lateinit var view: TodoView
@@ -24,10 +26,15 @@ class TodoPresenter(
     }
 
     fun addTodo(title: String) {
-        disposables += addTodoUseCase.execute(AddTodoUseCase.Params(Todo("", title, false)))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+        disposables +=
+            addTodoUseCase.execute(AddTodoUseCase.Params(
+                Todo("",
+                    title,
+                    false,
+                    loadCurrentUserUseCase.execute()?.uid ?: "guest")))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
     }
 
     fun updateTodo(todo: Todo) {

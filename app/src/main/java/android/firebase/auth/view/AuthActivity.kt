@@ -9,15 +9,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import org.koin.android.ext.android.inject
 
 class AuthActivity : AppCompatActivity(), AuthenticationView {
 
     private val presenter: AuthPresenter by inject()
-
-    private var user: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +27,8 @@ class AuthActivity : AppCompatActivity(), AuthenticationView {
             val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == Activity.RESULT_OK) {
-                user = FirebaseAuth.getInstance().currentUser
+                Toast.makeText(this, "User successfully logged in", Toast.LENGTH_SHORT).show()
+                finish()
             } else {
                 response?.error?.errorCode?.let {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -46,10 +43,6 @@ class AuthActivity : AppCompatActivity(), AuthenticationView {
     }
 
     override fun startLogin() {
-        FirebaseAuth.getInstance().currentUser?.let {
-            user = it
-        }
-
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build())

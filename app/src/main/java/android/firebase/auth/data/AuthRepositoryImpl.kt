@@ -6,6 +6,6 @@ class AuthRepositoryImpl(
     private val remoteSource: AuthRemoteSource
 ) : AuthRepository {
 
-    override fun isUserAuthenticated(): Boolean =
-        remoteSource.isUserAuthenticated()
+    override fun loadCurrentUser() =
+        remoteSource.loadCurrentUser()
 }
