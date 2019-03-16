@@ -1,4 +1,4 @@
-package android.firebase.feature
+package android.firebase.feature.auth
 
 import android.firebase.feature.auth.data.UserRemoteSource
 import android.firebase.feature.auth.data.UserRepositoryImpl
