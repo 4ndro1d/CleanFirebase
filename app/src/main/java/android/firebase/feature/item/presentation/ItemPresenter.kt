@@ -8,10 +8,8 @@ import android.firebase.feature.item.domain.model.Item
 import android.firebase.feature.item.domain.usecase.LoadItemsUseCase
 import android.firebase.feature.item.domain.usecase.SaveItemUseCase
 import android.firebase.feature.item.domain.usecase.UpdateItemUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class ItemPresenter(
@@ -30,7 +28,7 @@ class ItemPresenter(
             .subscribeOnIo()
             .observeOnMain()
             .subscribeBy(
-                onNext = { view.initAdapter(it) },
+                onNext = { view.showItems(it) },
                 onError = Timber::e
             )
     }
@@ -46,16 +44,24 @@ class ItemPresenter(
                     title,
                     false,
                     loadAuthenticatedUserUseCase.execute()?.uid ?: "guest")))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribeOnIo()
+                .observeOnMain()
+                .subscribeBy(
+                    onError = Timber::e
+                )
     }
 
     fun onItemCheckedChange(item: Item) {
+        Timber.d("onItemCheckedChange: $item")
         updateItem(item)
     }
 
     private fun updateItem(item: Item) {
-        updateItemUseCase.execute(UpdateItemUseCase.Params(item))
+        disposables += updateItemUseCase.execute(UpdateItemUseCase.Params(item))
+            .subscribeOnIo()
+            .observeOnMain()
+            .subscribeBy(
+                onError = Timber::e
+            )
     }
 }

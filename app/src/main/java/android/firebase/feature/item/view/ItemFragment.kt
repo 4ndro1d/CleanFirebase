@@ -44,7 +44,7 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
         }
     }
 
-    override fun initAdapter(items: List<Item>) {
+    override fun showItems(items: List<Item>) {
         itemAdapter.items = items
         itemAdapter.notifyDataSetChanged()
     }

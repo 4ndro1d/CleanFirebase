@@ -7,5 +7,5 @@ interface ItemView : BaseView {
 
     fun showInputDialog()
 
-    fun initAdapter(items: List<Item>)
+    fun showItems(items: List<Item>)
 }
