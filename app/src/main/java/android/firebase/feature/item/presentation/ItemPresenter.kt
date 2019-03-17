@@ -6,7 +6,7 @@ import android.firebase.extensions.subscribeOnIo
 import android.firebase.feature.auth.domain.usecase.LoadAuthenticatedUserUseCase
 import android.firebase.feature.item.domain.model.Item
 import android.firebase.feature.item.domain.model.STATE
-import android.firebase.feature.item.domain.usecase.LoadItemsUseCase
+import android.firebase.feature.item.domain.usecase.LoadItemsForUserUseCase
 import android.firebase.feature.item.domain.usecase.SaveItemUseCase
 import android.firebase.feature.item.domain.usecase.UpdateItemUseCase
 import io.reactivex.rxkotlin.plusAssign
@@ -14,7 +14,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
 
 class ItemPresenter(
-    private val loadItemsUseCase: LoadItemsUseCase,
+    private val loadItemsForUserUseCase: LoadItemsForUserUseCase,
     private val saveItemUseCase: SaveItemUseCase,
     private val updateItemUseCase: UpdateItemUseCase,
     private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase
@@ -25,22 +25,26 @@ class ItemPresenter(
     override fun start(view: ItemView) {
         this.view = view
 
-        disposables += loadItemsUseCase.execute()
-            .subscribeOnIo()
-            .observeOnMain()
-            .subscribeBy(
-                onNext = {
-                    it.map { withState ->
-                        when (withState.state) {
-                            STATE.REMOVED -> view.itemRemoved(withState.item)
-                            STATE.ADDED -> view.itemAdded(withState.item)
-                            STATE.MODIFIED -> view.itemModified(withState.item)
+        loadAuthenticatedUserUseCase.execute()?.uid?.let {
+            disposables += loadItemsForUserUseCase.execute(LoadItemsForUserUseCase.Params(it))
+                .subscribeOnIo()
+                .observeOnMain()
+                .subscribeBy(
+                    onNext = {
+                        it.map { withState ->
+                            when (withState.state) {
+                                STATE.REMOVED -> view.itemRemoved(withState.item)
+                                STATE.ADDED -> view.itemAdded(withState.item)
+                                STATE.MODIFIED -> view.itemModified(withState.item)
+                            }
                         }
+                    },
+                    onError = { e ->
+                        Timber.e(e)
+                        view.showError(e.message)
                     }
-//                    view.showItems(it.map { withState -> withState.item })
-                },
-                onError = Timber::e
-            )
+                )
+        } ?: view.showNotAuthenticated()
     }
 
     fun addTodoButtonClicked() {

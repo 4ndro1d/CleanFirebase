@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -42,6 +43,14 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
         addTodoButton.setOnClickListener {
             presenter.addTodoButtonClicked()
         }
+    }
+
+    override fun showNotAuthenticated() {
+        Toast.makeText(context, "User not authenticated", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showError(message: String?) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun showItems(items: List<Item>) {

@@ -7,7 +7,7 @@ import io.reactivex.Observable
 
 interface ItemRemoteSource {
 
-    fun loadItemsForCurrentUser(): Observable<List<ItemWithState>>
+    fun loadItemsForUser(userId: String): Observable<List<ItemWithState>>
 
     fun saveItem(item: Item): Completable
 

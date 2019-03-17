@@ -4,7 +4,6 @@ import android.firebase.feature.item.data.ItemRemoteSource
 import android.firebase.feature.item.domain.model.Item
 import android.firebase.feature.item.domain.model.ItemWithState
 import android.firebase.feature.item.domain.model.STATE
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Completable
@@ -14,12 +13,11 @@ class ItemRemoteSourceImpl(
     private val firestore: FirebaseFirestore
 ) : ItemRemoteSource {
 
-    override fun loadItemsForCurrentUser(): Observable<List<ItemWithState>> =
+    override fun loadItemsForUser(userId: String): Observable<List<ItemWithState>> =
         Observable.create { emitter ->
             val listenerRegistration = firestore
                 .collection(COLLECTION_ITEMS)
-                //TODO inject userId
-                .whereEqualTo("userId", FirebaseAuth.getInstance().currentUser?.uid)
+                .whereEqualTo("userId", userId)
                 .limit(50)
                 .addSnapshotListener { snapshot, e ->
                     if (e != null) {
@@ -37,9 +35,6 @@ class ItemRemoteSourceImpl(
                         }.let {
                             it?.let { it1 -> emitter.onNext(it1) }
                         }
-
-//                        snapshot?.toObjects(Item::class.java)
-//                            ?.let { emitter.onNext(it.map { item -> ItemWithState(STATE.ADDED, item) }) }
                     }
                 }
             emitter.setCancellable { listenerRegistration.remove() }

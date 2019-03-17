@@ -14,4 +14,8 @@ interface ItemView : BaseView {
     fun itemAdded(item: Item)
 
     fun itemModified(item: Item)
+
+    fun showNotAuthenticated()
+
+    fun showError(message: String?)
 }
