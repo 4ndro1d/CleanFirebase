@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.firebase.feature.auth.presentation.AuthPresenter
 import android.firebase.feature.auth.presentation.AuthenticationView
+import android.firebase.main.MainActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,7 +30,9 @@ class AuthActivity : AppCompatActivity(), AuthenticationView {
             if (resultCode == Activity.RESULT_OK) {
                 Toast.makeText(this, "User successfully logged in", Toast.LENGTH_SHORT).show()
                 presenter.addUser(response?.email)
-                finish()
+
+                startActivity(Intent(this, AuthActivity::class.java))
+                navigateToMain()
             } else {
                 response?.error?.errorCode?.let {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -38,9 +41,17 @@ class AuthActivity : AppCompatActivity(), AuthenticationView {
         }
     }
 
+    private fun navigateToMain() {
+        Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }.also {
+            startActivity(it)
+        }
+    }
+
     override fun userAlreadyLoggedIn() {
         Toast.makeText(this, "User is already logged in", Toast.LENGTH_SHORT).show()
-        finish()
+        navigateToMain()
     }
 
     override fun startLogin() {

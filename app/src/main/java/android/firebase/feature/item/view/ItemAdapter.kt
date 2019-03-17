@@ -15,7 +15,7 @@ class ItemAdapter(
 ) : RecyclerView.Adapter<ItemAdapter.ItemHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder =
-        ItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.todo, parent, false))
+        ItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false))
 
     override fun getItemCount() =
         items.size
@@ -38,6 +38,7 @@ class ItemAdapter(
     fun addItem(item: Item) {
         val index = items.size
         items.add(index, item)
+        notifyItemInserted(index)
     }
 
     //TODO use LayoutContainer

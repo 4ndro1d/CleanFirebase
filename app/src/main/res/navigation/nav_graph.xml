@@ -2,10 +2,19 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/todoListFragment">
+    app:startDestination="@id/itemsFragment">
 
     <fragment
-        android:id="@+id/todoListFragment"
+        android:id="@+id/listsFragment"
+        android:name="android.firebase.feature.list.view.ListsFragment"
+        android:label="Lists">
+        <action
+            android:id="@+id/action_listsFragment_to_itemsFragment"
+            app:destination="@id/itemsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/itemsFragment"
         android:name="android.firebase.feature.item.view.ItemFragment"
         android:label="Todos" />
 

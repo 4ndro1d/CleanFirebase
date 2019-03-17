@@ -14,7 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_item_list.*
+import kotlinx.android.synthetic.main.fragment_items.*
 import org.koin.android.ext.android.inject
 
 class ItemFragment : Fragment(), ItemView, LifecycleOwner {
@@ -24,7 +24,7 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
     private lateinit var itemAdapter: ItemAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(android.firebase.R.layout.fragment_item_list, container, false)
+        inflater.inflate(android.firebase.R.layout.fragment_items, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,6 +32,7 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
         itemAdapter = ItemAdapter(
             clickListener = { item -> presenter.onItemCheckedChange(item) }
         )
+
         itemRecycler.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)

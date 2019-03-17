@@ -30,8 +30,8 @@ class ItemPresenter(
                 .subscribeOnIo()
                 .observeOnMain()
                 .subscribeBy(
-                    onNext = {
-                        it.map { withState ->
+                    onNext = { itemsWithState ->
+                        itemsWithState.map { withState ->
                             when (withState.state) {
                                 STATE.REMOVED -> view.itemRemoved(withState.item)
                                 STATE.ADDED -> view.itemAdded(withState.item)
