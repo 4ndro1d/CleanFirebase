@@ -5,6 +5,7 @@ import android.firebase.extensions.observeOnMain
 import android.firebase.extensions.subscribeOnIo
 import android.firebase.feature.auth.domain.usecase.LoadAuthenticatedUserUseCase
 import android.firebase.feature.item.domain.model.Item
+import android.firebase.feature.item.domain.model.STATE
 import android.firebase.feature.item.domain.usecase.LoadItemsUseCase
 import android.firebase.feature.item.domain.usecase.SaveItemUseCase
 import android.firebase.feature.item.domain.usecase.UpdateItemUseCase
@@ -28,7 +29,16 @@ class ItemPresenter(
             .subscribeOnIo()
             .observeOnMain()
             .subscribeBy(
-                onNext = { view.showItems(it) },
+                onNext = {
+                    it.map { withState ->
+                        when (withState.state) {
+                            STATE.REMOVED -> view.itemRemoved(withState.item)
+                            STATE.ADDED -> view.itemAdded(withState.item)
+                            STATE.MODIFIED -> view.itemModified(withState.item)
+                        }
+                    }
+//                    view.showItems(it.map { withState -> withState.item })
+                },
                 onError = Timber::e
             )
     }

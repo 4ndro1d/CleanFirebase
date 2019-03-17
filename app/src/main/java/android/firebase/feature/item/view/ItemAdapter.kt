@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ItemAdapter(
     private val clickListener: (item: Item) -> Unit,
-    var items: List<Item> = emptyList()
+    var items: MutableList<Item> = mutableListOf()
 ) : RecyclerView.Adapter<ItemAdapter.ItemHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder =
@@ -22,6 +22,22 @@ class ItemAdapter(
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         holder.bind(items[position])
+    }
+
+    fun removeItem(item: Item) {
+        notifyItemRemoved(items.indexOf(item))
+        items.remove(item)
+    }
+
+    fun modifyItem(item: Item) {
+        val index = items.indexOfFirst { it.id == item.id }
+        items[index] = item
+        notifyItemChanged(index)
+    }
+
+    fun addItem(item: Item) {
+        val index = items.size
+        items.add(index, item)
     }
 
     //TODO use LayoutContainer

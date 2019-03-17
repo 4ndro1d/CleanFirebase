@@ -45,8 +45,20 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
     }
 
     override fun showItems(items: List<Item>) {
-        itemAdapter.items = items
+        itemAdapter.items = items.toMutableList()
         itemAdapter.notifyDataSetChanged()
+    }
+
+    override fun itemRemoved(item: Item) {
+        itemAdapter.removeItem(item)
+    }
+
+    override fun itemAdded(item: Item) {
+        itemAdapter.addItem(item)
+    }
+
+    override fun itemModified(item: Item) {
+        itemAdapter.modifyItem(item)
     }
 
     override fun showInputDialog() {

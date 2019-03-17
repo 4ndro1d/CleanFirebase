@@ -5,5 +5,5 @@ data class Item(
     val title: String = "",
     val done: Boolean = false,
     val userId: String = "",
-    val sharedUserIds: List<String> = listOf("bojdfs")
+    val sharedUserIds: List<String> = emptyList()
 )
