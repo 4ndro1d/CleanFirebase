@@ -14,19 +14,24 @@ import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
 
 class ItemPresenter(
-    private val loadItemsForUserUseCase: LoadItemsForUserUseCase,
+    private val loadItemsForListUseCase: LoadItemsForUserUseCase,
     private val saveItemUseCase: SaveItemUseCase,
     private val updateItemUseCase: UpdateItemUseCase,
     private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase
 ) : BasePresenter<ItemView> {
 
     private lateinit var view: ItemView
+    private lateinit var listId: String
+
+    fun setListId(listId: String) {
+        this.listId = listId
+    }
 
     override fun start(view: ItemView) {
         this.view = view
 
-        loadAuthenticatedUserUseCase.execute()?.uid?.let {
-            disposables += loadItemsForUserUseCase.execute(LoadItemsForUserUseCase.Params(it))
+        listId.let {
+            disposables += loadItemsForListUseCase.execute(LoadItemsForUserUseCase.Params(it))
                 .subscribeOnIo()
                 .observeOnMain()
                 .subscribeBy(
@@ -44,7 +49,7 @@ class ItemPresenter(
                         view.showError(e.message)
                     }
                 )
-        } ?: view.showNotAuthenticated()
+        }
     }
 
     fun addItemButtonClicked() {
@@ -55,6 +60,7 @@ class ItemPresenter(
         disposables +=
             saveItemUseCase.execute(SaveItemUseCase.Params(
                 Item(title = title,
+                    listId = listId,
                     userId = loadAuthenticatedUserUseCase.execute()?.uid ?: "guest")))
                 .subscribeOnIo()
                 .observeOnMain()

@@ -21,6 +21,7 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
 
     private val presenter: ItemPresenter by inject()
 
+    private val safeArgs by lazy { arguments?.let { ItemFragmentArgs.fromBundle(it) } }
     private lateinit var itemAdapter: ItemAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -31,6 +32,7 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
 
         initRecycler()
 
+        safeArgs?.listId?.let { presenter.setListId(it) }
         presenter.start(this)
 
         addItemButton.setOnClickListener {

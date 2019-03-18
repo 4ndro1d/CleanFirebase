@@ -7,8 +7,8 @@ class ItemRepositoryImpl(
     private val remoteSource: ItemRemoteSource
 ) : ItemRepository {
 
-    override fun loadItemsForUser(userId: String) =
-        remoteSource.loadItemsForUser(userId)
+    override fun loadItemsForList(listId: String) =
+        remoteSource.loadItemsForList(listId)
 
     override fun saveItem(item: Item) =
         remoteSource.saveItem(item)

@@ -18,11 +18,11 @@ class ItemRemoteSourceImpl(
     private val itemWithStateMapper: RemoteItemWithStateMapper
 ) : ItemRemoteSource {
 
-    override fun loadItemsForUser(userId: String): Observable<List<ItemWithState>> =
+    override fun loadItemsForList(listId: String): Observable<List<ItemWithState>> =
         Observable.create { emitter ->
             val listenerRegistration = firestore
                 .collection(COLLECTION_ITEMS)
-                .whereEqualTo("userId", userId)
+                .whereEqualTo("listId", listId)
                 .limit(50)
                 .addSnapshotListener { snapshot, e ->
                     if (e != null) {

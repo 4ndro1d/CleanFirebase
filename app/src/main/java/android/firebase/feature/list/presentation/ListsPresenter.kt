@@ -58,7 +58,7 @@ class ListsPresenter(
     }
 
     fun onListClicked(list: MyList) {
-        view.navigateToItemsForList(list.id)
+        view.navigateToItemsForList(list.id, list.title)
     }
 
     fun addListButtonClicked() {

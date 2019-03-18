@@ -11,9 +11,9 @@ class LoadItemsForUserUseCase(
 ) : UseCase<Params, Observable<List<ItemWithState>>> {
 
     override fun execute(param: Params): Observable<List<ItemWithState>> =
-        repository.loadItemsForUser(param.userId)
+        repository.loadItemsForList(param.listId)
 
     data class Params(
-        val userId: String
+        val listId: String
     )
 }

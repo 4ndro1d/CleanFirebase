@@ -51,8 +51,9 @@ class ListsFragment : Fragment(), ListsView {
         }
     }
 
-    override fun navigateToItemsForList(id: String) {
-        view?.findNavController()?.navigate(R.id.action_listsFragment_to_itemsFragment)
+    override fun navigateToItemsForList(listId: String, title: String) {
+        val action = ListsFragmentDirections.actionListsFragmentToItemsFragment(listId, title)
+        view?.findNavController()?.navigate(action)
     }
 
     override fun showInputDialog() {

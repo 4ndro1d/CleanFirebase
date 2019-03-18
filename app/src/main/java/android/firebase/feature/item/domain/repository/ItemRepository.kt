@@ -7,7 +7,7 @@ import io.reactivex.Observable
 
 interface ItemRepository {
 
-    fun loadItemsForUser(userId: String): Observable<List<ItemWithState>>
+    fun loadItemsForList(listId: String): Observable<List<ItemWithState>>
 
     fun saveItem(item: Item): Completable
 

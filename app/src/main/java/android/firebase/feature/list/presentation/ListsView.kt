@@ -4,7 +4,7 @@ import android.firebase.feature.list.domain.model.MyList
 
 interface ListsView {
 
-    fun navigateToItemsForList(id: String)
+    fun navigateToItemsForList(listId: String, title: String)
 
     fun showInputDialog()
 
