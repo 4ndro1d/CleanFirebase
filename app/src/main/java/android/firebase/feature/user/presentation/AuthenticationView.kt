@@ -1,4 +1,4 @@
-package android.firebase.feature.auth.presentation
+package android.firebase.feature.user.presentation
 
 import android.firebase.common.view.BaseView
 

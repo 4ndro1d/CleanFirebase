@@ -1,7 +1,7 @@
-package android.firebase.feature.auth.remote.repository
+package android.firebase.feature.user.remote.repository
 
-import android.firebase.feature.auth.data.UserRemoteSource
-import android.firebase.feature.auth.domain.model.User
+import android.firebase.feature.user.data.UserRemoteSource
+import android.firebase.feature.user.domain.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Completable
 

@@ -1,4 +1,4 @@
-package android.firebase.feature.auth.data
+package android.firebase.feature.user.data
 
 import io.reactivex.Completable
 

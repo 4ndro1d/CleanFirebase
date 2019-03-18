@@ -1,9 +1,9 @@
-package android.firebase.feature.auth.view
+package android.firebase.feature.user.view
 
 import android.app.Activity
 import android.content.Intent
-import android.firebase.feature.auth.presentation.AuthPresenter
-import android.firebase.feature.auth.presentation.AuthenticationView
+import android.firebase.feature.user.presentation.AuthPresenter
+import android.firebase.feature.user.presentation.AuthenticationView
 import android.firebase.main.MainActivity
 import android.os.Bundle
 import android.widget.Toast

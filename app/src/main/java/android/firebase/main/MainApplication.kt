@@ -2,8 +2,8 @@ package android.firebase.main
 
 import android.app.Application
 import android.firebase.common.firestoreModule
-import android.firebase.feature.auth.authModule
-import android.firebase.feature.auth.userModule
+import android.firebase.feature.user.authModule
+import android.firebase.feature.user.userModule
 import android.firebase.feature.item.itemsModule
 import android.firebase.feature.list.listsModule
 import org.koin.android.ext.android.startKoin

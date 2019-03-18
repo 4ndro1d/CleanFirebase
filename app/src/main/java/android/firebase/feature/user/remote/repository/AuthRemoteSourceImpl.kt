@@ -1,6 +1,6 @@
-package android.firebase.feature.auth.remote.repository
+package android.firebase.feature.user.remote.repository
 
-import android.firebase.feature.auth.data.AuthRemoteSource
+import android.firebase.feature.user.data.AuthRemoteSource
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthRemoteSourceImpl(

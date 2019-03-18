@@ -1,4 +1,4 @@
-package android.firebase.feature.auth.domain.repository
+package android.firebase.feature.user.domain.repository
 
 import io.reactivex.Completable
 

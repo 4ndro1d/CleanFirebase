@@ -1,8 +1,8 @@
-package android.firebase.feature.auth.presentation
+package android.firebase.feature.user.presentation
 
 import android.firebase.common.presentation.BasePresenter
-import android.firebase.feature.auth.domain.usecase.LoadAuthenticatedUserUseCase
-import android.firebase.feature.auth.domain.usecase.SaveUserUseCase
+import android.firebase.feature.user.domain.usecase.LoadAuthenticatedUserUseCase
+import android.firebase.feature.user.domain.usecase.SaveUserUseCase
 import io.reactivex.rxkotlin.plusAssign
 
 class AuthPresenter(

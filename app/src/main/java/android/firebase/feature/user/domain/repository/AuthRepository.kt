@@ -1,8 +1,8 @@
-package android.firebase.feature.auth.data
+package android.firebase.feature.user.domain.repository
 
 import com.google.firebase.auth.FirebaseUser
 
-interface AuthRemoteSource {
+interface AuthRepository {
 
     fun loadAuthenticatedUser(): FirebaseUser?
 }

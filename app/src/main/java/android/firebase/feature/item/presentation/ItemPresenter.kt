@@ -3,7 +3,7 @@ package android.firebase.feature.item.presentation
 import android.firebase.common.presentation.BasePresenter
 import android.firebase.extensions.observeOnMain
 import android.firebase.extensions.subscribeOnIo
-import android.firebase.feature.auth.domain.usecase.LoadAuthenticatedUserUseCase
+import android.firebase.feature.user.domain.usecase.LoadAuthenticatedUserUseCase
 import android.firebase.feature.item.domain.model.Item
 import android.firebase.feature.item.domain.model.STATE
 import android.firebase.feature.item.domain.usecase.LoadItemsForUserUseCase

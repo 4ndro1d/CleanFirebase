@@ -1,6 +1,6 @@
-package android.firebase.feature.auth.data
+package android.firebase.feature.user.data
 
-import android.firebase.feature.auth.domain.repository.AuthRepository
+import android.firebase.feature.user.domain.repository.AuthRepository
 
 class AuthRepositoryImpl(
     private val remoteSource: AuthRemoteSource

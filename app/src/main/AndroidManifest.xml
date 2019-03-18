@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="android.firebase.feature.auth.view.AuthActivity"
+            android:name="android.firebase.feature.user.view.AuthActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

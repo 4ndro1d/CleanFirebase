@@ -1,6 +1,6 @@
-package android.firebase.feature.auth.domain.usecase
+package android.firebase.feature.user.domain.usecase
 
-import android.firebase.feature.auth.domain.repository.UserRepository
+import android.firebase.feature.user.domain.repository.UserRepository
 import com.mediasaturn.common.domain.UseCase
 import io.reactivex.Completable
 
