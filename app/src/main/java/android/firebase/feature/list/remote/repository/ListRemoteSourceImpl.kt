@@ -11,27 +11,13 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Completable
 import io.reactivex.Observable
+import timber.log.Timber
 
 class ListRemoteSourceImpl(
     private val firestore: FirebaseFirestore,
     private val listMapper: RemoteListMapper,
     private val listWithStateMapper: RemoteListWithStateMapper
 ) : ListRemoteSource {
-
-    override fun saveList(list: MyList): Completable =
-        Completable.fromAction {
-            val id = firestore
-                .collection(COLLECTION_LISTS)
-                .document()
-                .id
-
-            val remoteItem = listMapper.to(list).copy(id = id)
-
-            firestore
-                .collection(COLLECTION_LISTS)
-                .document(id)
-                .set(remoteItem)
-        }
 
     override fun loadListsForUser(userId: String): Observable<List<ListWithState>> =
         Observable.create { emitter ->
@@ -61,6 +47,22 @@ class ListRemoteSourceImpl(
         listWithStateMapper.map(
             Pair(listMapper.from(
                 documentChange.document.toObject(RemoteList::class.java)), state))
+
+    override fun saveList(list: MyList): Completable =
+        Completable.fromAction {
+            val id = firestore
+                .collection(COLLECTION_LISTS)
+                .document()
+                .id
+
+            Timber.d("WADDAFUCK")
+            val remoteItem = listMapper.to(list).copy(id = id)
+
+            firestore
+                .collection(COLLECTION_LISTS)
+                .document(id)
+                .set(remoteItem)
+        }
 
     override fun loadListsSharedWithUser(userId: String): Observable<List<ListWithState>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

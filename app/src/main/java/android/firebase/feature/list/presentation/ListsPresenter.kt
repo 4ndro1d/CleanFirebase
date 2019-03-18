@@ -34,6 +34,8 @@ class ListsPresenter(
                                 STATE.REMOVED -> view.listRemoved(withState.list)
                                 STATE.ADDED -> view.listAdded(withState.list)
                                 STATE.MODIFIED -> view.listModified(withState.list)
+                            }.also {
+                                Timber.d("onNext $withState")
                             }
                         }
                     },
@@ -46,15 +48,15 @@ class ListsPresenter(
     }
 
     fun addList(title: String) {
-        disposables +=
-            saveListUseCase.execute(SaveListUseCase.Params(
-                MyList(title = title,
-                    userId = loadAuthenticatedUserUseCase.execute()?.uid ?: "guest")))
-                .subscribeOnIo()
-                .observeOnMain()
-                .subscribeBy(
-                    onError = Timber::e
-                )
+        loadAuthenticatedUserUseCase.execute()?.uid?.let {
+            disposables +=
+                saveListUseCase.execute(SaveListUseCase.Params(MyList(title = title, userId = it)))
+                    .subscribeOnIo()
+                    .observeOnMain()
+                    .subscribeBy(
+                        onError = Timber::e
+                    )
+        } ?: view.showNotAuthenticated()
     }
 
     fun onListClicked(list: MyList) {
@@ -62,6 +64,7 @@ class ListsPresenter(
     }
 
     fun addListButtonClicked() {
+        Timber.d("Button clicked")
         view.showInputDialog()
     }
 }

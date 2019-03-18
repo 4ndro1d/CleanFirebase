@@ -22,7 +22,7 @@ class ListsFragment : Fragment(), ListsView {
 
     private val presenter: ListsPresenter by inject()
 
-    lateinit var listAdapter: ListAdapter
+    private lateinit var listAdapter: ListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_lists, container, false)

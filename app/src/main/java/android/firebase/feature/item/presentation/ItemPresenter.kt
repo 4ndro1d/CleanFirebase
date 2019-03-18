@@ -57,16 +57,18 @@ class ItemPresenter(
     }
 
     fun addItem(title: String) {
-        disposables +=
-            saveItemUseCase.execute(SaveItemUseCase.Params(
-                Item(title = title,
-                    listId = listId,
-                    userId = loadAuthenticatedUserUseCase.execute()?.uid ?: "guest")))
-                .subscribeOnIo()
-                .observeOnMain()
-                .subscribeBy(
-                    onError = Timber::e
-                )
+        loadAuthenticatedUserUseCase.execute()?.uid?.let {
+            disposables +=
+                saveItemUseCase.execute(SaveItemUseCase.Params(
+                    Item(title = title,
+                        listId = listId,
+                        userId = it)))
+                    .subscribeOnIo()
+                    .observeOnMain()
+                    .subscribeBy(
+                        onError = Timber::e
+                    )
+        } ?: view.showNotAuthenticated()
     }
 
     fun onItemCheckedChange(item: Item) {
