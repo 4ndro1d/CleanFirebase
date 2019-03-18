@@ -3,17 +3,19 @@ package android.firebase.feature.list.presentation
 import android.firebase.common.presentation.BasePresenter
 import android.firebase.extensions.observeOnMain
 import android.firebase.extensions.subscribeOnIo
-import android.firebase.feature.user.domain.usecase.LoadAuthenticatedUserUseCase
 import android.firebase.feature.list.domain.model.MyList
 import android.firebase.feature.list.domain.model.STATE
 import android.firebase.feature.list.domain.usecase.LoadListsForUserUseCase
+import android.firebase.feature.list.domain.usecase.LoadSharedListsForUserUseCase
 import android.firebase.feature.list.domain.usecase.SaveListUseCase
+import android.firebase.feature.user.domain.usecase.LoadAuthenticatedUserUseCase
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
 
 class ListsPresenter(
     private val loadListsForUserUseCase: LoadListsForUserUseCase,
+    private val loadSharedListsForUserUseCase: LoadSharedListsForUserUseCase,
     private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase,
     private val saveListUseCase: SaveListUseCase
 ) : BasePresenter<ListsView> {
@@ -25,6 +27,7 @@ class ListsPresenter(
 
         loadAuthenticatedUserUseCase.execute()?.uid?.let {
             disposables += loadListsForUserUseCase.execute(LoadListsForUserUseCase.Params(it))
+                .mergeWith(loadSharedListsForUserUseCase.execute(LoadSharedListsForUserUseCase.Params(it)))
                 .subscribeOnIo()
                 .observeOnMain()
                 .subscribeBy(

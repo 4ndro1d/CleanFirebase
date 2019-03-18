@@ -8,4 +8,7 @@ class UserRepositoryImpl(
 
     override fun saveUser(id: String?, email: String) =
         remoteSource.saveUser(id, email)
+
+    override fun loadUserByEmail(email: String) =
+        remoteSource.loadUserByEmail(email)
 }

@@ -38,6 +38,10 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
         addItemButton.setOnClickListener {
             presenter.addItemButtonClicked()
         }
+
+        shareButton.setOnClickListener {
+            presenter.shareButtonClicked()
+        }
     }
 
     private fun initRecycler() {
@@ -82,6 +86,22 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
                 setView(input)
 
                 setPositiveButton("OK") { _, _ -> presenter.addItem(input.text.toString()) }
+                setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                show()
+            }
+        }
+    }
+
+    override fun showEmailInputDialog() {
+        context?.let {
+            AlertDialog.Builder(it).apply {
+                setTitle("Email:")
+
+                val input = EditText(context)
+                input.inputType = InputType.TYPE_CLASS_TEXT
+                setView(input)
+
+                setPositiveButton("OK") { _, _ -> presenter.shareByEmail(input.text.toString()) }
                 setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
                 show()
             }

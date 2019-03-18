@@ -12,4 +12,6 @@ interface ListRepository {
     fun loadListsForUser(userId: String): Observable<List<ListWithState>>
 
     fun loadListsSharedWithUser(userId: String): Observable<List<ListWithState>>
+
+    fun shareListWithUser(listId: String, userId: String): Completable
 }

@@ -3,12 +3,13 @@ package android.firebase.feature.item.presentation
 import android.firebase.common.presentation.BasePresenter
 import android.firebase.extensions.observeOnMain
 import android.firebase.extensions.subscribeOnIo
-import android.firebase.feature.user.domain.usecase.LoadAuthenticatedUserUseCase
 import android.firebase.feature.item.domain.model.Item
 import android.firebase.feature.item.domain.model.STATE
 import android.firebase.feature.item.domain.usecase.LoadItemsForUserUseCase
 import android.firebase.feature.item.domain.usecase.SaveItemUseCase
 import android.firebase.feature.item.domain.usecase.UpdateItemUseCase
+import android.firebase.feature.user.domain.usecase.LoadAuthenticatedUserUseCase
+import android.firebase.feature.user.domain.usecase.ShareListByEmailUseCase
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
@@ -17,7 +18,8 @@ class ItemPresenter(
     private val loadItemsForListUseCase: LoadItemsForUserUseCase,
     private val saveItemUseCase: SaveItemUseCase,
     private val updateItemUseCase: UpdateItemUseCase,
-    private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase
+    private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase,
+    private val shareListByEmailUseCase: ShareListByEmailUseCase
 ) : BasePresenter<ItemView> {
 
     private lateinit var view: ItemView
@@ -81,6 +83,22 @@ class ItemPresenter(
             .observeOnMain()
             .subscribeBy(
                 onError = Timber::e
+            )
+    }
+
+    fun shareButtonClicked() {
+        view.showEmailInputDialog()
+    }
+
+    fun shareByEmail(email: String) {
+        disposables += shareListByEmailUseCase.execute(ShareListByEmailUseCase.Params(email, listId))
+            .subscribeOnIo()
+            .observeOnMain()
+            .subscribeBy(
+                onComplete = {
+                    view.showError("User could not be invited")
+                },
+                onError = { view.showError(it.message) }
             )
     }
 }

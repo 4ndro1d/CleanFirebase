@@ -16,4 +16,6 @@ interface ItemView : BaseView {
     fun showNotAuthenticated()
 
     fun showError(message: String?)
+
+    fun showEmailInputDialog()
 }

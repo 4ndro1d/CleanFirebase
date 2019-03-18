@@ -10,6 +10,9 @@ import android.firebase.feature.item.presentation.ItemPresenter
 import android.firebase.feature.item.remote.mapper.RemoteItemMapper
 import android.firebase.feature.item.remote.mapper.RemoteItemWithStateMapper
 import android.firebase.feature.item.remote.repository.ItemRemoteSourceImpl
+import android.firebase.feature.list.domain.usecase.ShareListWithUserUseCase
+import android.firebase.feature.user.domain.usecase.LoadUserByMailUseCase
+import android.firebase.feature.user.domain.usecase.ShareListByEmailUseCase
 import org.koin.dsl.module.module
 
 val itemsModule = module {
@@ -21,5 +24,8 @@ val itemsModule = module {
     single { LoadItemsForUserUseCase(get()) }
     single { SaveItemUseCase(get()) }
     single { UpdateItemUseCase(get()) }
-    single { ItemPresenter(get(), get(), get(), get()) }
+    single { LoadUserByMailUseCase(get()) }
+    single { ShareListByEmailUseCase(get(), get()) }
+    single { ShareListWithUserUseCase(get()) }
+    single { ItemPresenter(get(), get(), get(), get(), get()) }
 }

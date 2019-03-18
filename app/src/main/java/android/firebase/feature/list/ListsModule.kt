@@ -5,6 +5,7 @@ import android.firebase.feature.list.data.repository.ListRemoteSource
 import android.firebase.feature.list.data.repository.ListRepositoryImpl
 import android.firebase.feature.list.domain.repository.ListRepository
 import android.firebase.feature.list.domain.usecase.LoadListsForUserUseCase
+import android.firebase.feature.list.domain.usecase.LoadSharedListsForUserUseCase
 import android.firebase.feature.list.domain.usecase.SaveListUseCase
 import android.firebase.feature.list.presentation.ListsPresenter
 import android.firebase.feature.list.remote.mapper.RemoteListWithStateMapper
@@ -18,6 +19,7 @@ val listsModule = module {
     single<ListRemoteSource> { ListRemoteSourceImpl(get(), get(), get()) }
     single<ListRepository> { ListRepositoryImpl(get()) }
     single { LoadListsForUserUseCase(get()) }
+    single { LoadSharedListsForUserUseCase(get()) }
     single { SaveListUseCase(get()) }
-    single { ListsPresenter(get(), get(), get()) }
+    single { ListsPresenter(get(), get(), get(), get()) }
 }
