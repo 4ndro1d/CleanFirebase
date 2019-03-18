@@ -4,13 +4,18 @@ import android.firebase.feature.item.data.ItemRemoteSource
 import android.firebase.feature.item.domain.model.Item
 import android.firebase.feature.item.domain.model.ItemWithState
 import android.firebase.feature.item.domain.model.STATE
+import android.firebase.feature.item.remote.mapper.RemoteItemMapper
+import android.firebase.feature.item.remote.mapper.RemoteItemWithStateMapper
+import android.firebase.feature.item.remote.model.RemoteItem
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Completable
 import io.reactivex.Observable
 
 class ItemRemoteSourceImpl(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val itemMapper: RemoteItemMapper,
+    private val itemWithStateMapper: RemoteItemWithStateMapper
 ) : ItemRemoteSource {
 
     override fun loadItemsForUser(userId: String): Observable<List<ItemWithState>> =
@@ -25,12 +30,9 @@ class ItemRemoteSourceImpl(
                     } else {
                         snapshot?.documentChanges?.map {
                             when (it.type) {
-                                DocumentChange.Type.ADDED -> ItemWithState(
-                                    STATE.ADDED, it.document.toObject(Item::class.java))
-                                DocumentChange.Type.MODIFIED -> ItemWithState(
-                                    STATE.MODIFIED, it.document.toObject(Item::class.java))
-                                DocumentChange.Type.REMOVED -> ItemWithState(
-                                    STATE.REMOVED, it.document.toObject(Item::class.java))
+                                DocumentChange.Type.ADDED -> mapToItemWithState(it, STATE.ADDED)
+                                DocumentChange.Type.MODIFIED -> mapToItemWithState(it, STATE.MODIFIED)
+                                DocumentChange.Type.REMOVED -> mapToItemWithState(it, STATE.REMOVED)
                             }
                         }.let {
                             it?.let { it1 -> emitter.onNext(it1) }
@@ -39,6 +41,11 @@ class ItemRemoteSourceImpl(
                 }
             emitter.setCancellable { listenerRegistration.remove() }
         }
+
+    private fun mapToItemWithState(documentChange: DocumentChange, state: STATE): ItemWithState =
+        itemWithStateMapper.map(
+            Pair(itemMapper.from(
+                documentChange.document.toObject(RemoteItem::class.java)), state))
 
     override fun saveItem(item: Item) =
         Completable.fromAction {

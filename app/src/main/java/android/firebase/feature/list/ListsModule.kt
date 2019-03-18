@@ -11,7 +11,6 @@ val listsModule = module {
 
     single<ListRemoteSource> { ListRemoteSourceImpl(get()) }
     single<ListRepository> { ListRepositoryImpl(get()) }
-
     single { ListsPresenter() }
 
 }

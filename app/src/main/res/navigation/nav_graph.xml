@@ -16,6 +16,6 @@
     <fragment
         android:id="@+id/itemsFragment"
         android:name="android.firebase.feature.item.view.ItemFragment"
-        android:label="Todos" />
+        android:label="Items" />
 
 </navigation>

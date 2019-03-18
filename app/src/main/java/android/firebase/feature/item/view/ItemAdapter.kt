@@ -1,8 +1,10 @@
 package android.firebase.feature.item.view
 
+import android.annotation.SuppressLint
 import android.firebase.R
 import android.firebase.feature.item.domain.model.Item
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -47,10 +49,17 @@ class ItemAdapter(
         private val title by lazy<TextView> { view.findViewById(R.id.title) }
         private val checkBox by lazy<CheckBox> { view.findViewById(R.id.todoCheckbox) }
 
+        @SuppressLint("ClickableViewAccessibility")
         fun bind(item: Item) {
             title.text = item.title
             checkBox.isChecked = item.done
-            checkBox.setOnCheckedChangeListener { _, checked -> clickListener.invoke(item.copy(done = checked)) }
+            checkBox.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    clickListener.invoke(item.copy(done = !item.done))
+                }
+                true
+            }
+//            checkBox.setOnCheckedChangeListener { _, checked -> clickListener.invoke(item.copy(done = checked)) }
         }
     }
 }
