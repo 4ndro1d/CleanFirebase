@@ -1,6 +1,6 @@
-package android.firebase.feature.list.domain.model
+package android.firebase.feature.list.remote.model
 
-data class MyList(
+data class RemoteList(
     val id: String = "",
     val title: String = "",
     val userId: String = "",

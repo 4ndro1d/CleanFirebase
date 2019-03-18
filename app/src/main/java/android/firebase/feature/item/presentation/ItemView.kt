@@ -7,8 +7,6 @@ interface ItemView : BaseView {
 
     fun showInputDialog()
 
-    fun showItems(items: List<Item>)
-
     fun itemRemoved(item: Item)
 
     fun itemAdded(item: Item)

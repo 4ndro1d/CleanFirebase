@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ListAdapter(
     private val clickListener: (list: MyList) -> Unit,
-    var lists: List<MyList> = mutableListOf()
+    var lists: MutableList<MyList> = mutableListOf()
 ) : RecyclerView.Adapter<ListAdapter.ListHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListHolder =
@@ -21,6 +21,23 @@ class ListAdapter(
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
         holder.bind(lists[position])
+    }
+
+    fun removeList(list: MyList) {
+        notifyItemRemoved(lists.indexOf(list))
+        lists.remove(list)
+    }
+
+    fun modifyList(list: MyList) {
+        val index = lists.indexOfFirst { it.id == list.id }
+        lists[index] = list
+        notifyItemChanged(index)
+    }
+
+    fun addList(list: MyList) {
+        val index = lists.size
+        lists.add(index, list)
+        notifyItemInserted(index)
     }
 
     inner class ListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

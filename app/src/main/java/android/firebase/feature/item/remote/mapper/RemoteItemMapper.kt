@@ -12,7 +12,7 @@ class RemoteItemMapper : BidirectionalMapper<RemoteItem, Item> {
             userId = userId,
             done = done,
             title = title,
-            sharedUserIds = sharedUserIds
+            listId = listId
         )
     }
 
@@ -22,7 +22,7 @@ class RemoteItemMapper : BidirectionalMapper<RemoteItem, Item> {
             userId = userId,
             done = done,
             title = title,
-            sharedUserIds = sharedUserIds
+            listId = listId
         )
     }
 }

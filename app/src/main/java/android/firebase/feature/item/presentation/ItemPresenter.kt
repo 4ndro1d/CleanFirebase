@@ -47,17 +47,15 @@ class ItemPresenter(
         } ?: view.showNotAuthenticated()
     }
 
-    fun addTodoButtonClicked() {
+    fun addItemButtonClicked() {
         view.showInputDialog()
     }
 
     fun addItem(title: String) {
         disposables +=
             saveItemUseCase.execute(SaveItemUseCase.Params(
-                Item("",
-                    title,
-                    false,
-                    loadAuthenticatedUserUseCase.execute()?.uid ?: "guest")))
+                Item(title = title,
+                    userId = loadAuthenticatedUserUseCase.execute()?.uid ?: "guest")))
                 .subscribeOnIo()
                 .observeOnMain()
                 .subscribeBy(
@@ -66,7 +64,6 @@ class ItemPresenter(
     }
 
     fun onItemCheckedChange(item: Item) {
-        Timber.d("onItemCheckedChange: $item")
         updateItem(item)
     }
 

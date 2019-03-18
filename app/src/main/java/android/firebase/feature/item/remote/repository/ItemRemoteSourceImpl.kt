@@ -35,7 +35,7 @@ class ItemRemoteSourceImpl(
                                 DocumentChange.Type.REMOVED -> mapToItemWithState(it, STATE.REMOVED)
                             }
                         }.let {
-                            it?.let { it1 -> emitter.onNext(it1) }
+                            it?.let { itemsWithState -> emitter.onNext(itemsWithState) }
                         }
                     }
                 }
@@ -54,12 +54,12 @@ class ItemRemoteSourceImpl(
                 .document()
                 .id
 
-            val newTodo = item.copy(id = id)
+            val remoteItem = itemMapper.to(item).copy(id = id)
 
             firestore
                 .collection(COLLECTION_ITEMS)
                 .document(id)
-                .set(newTodo)
+                .set(remoteItem)
         }
 
     override fun updateItem(item: Item) =

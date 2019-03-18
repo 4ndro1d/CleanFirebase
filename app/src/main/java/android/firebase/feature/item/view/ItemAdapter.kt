@@ -47,7 +47,7 @@ class ItemAdapter(
     inner class ItemHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         private val title by lazy<TextView> { view.findViewById(R.id.title) }
-        private val checkBox by lazy<CheckBox> { view.findViewById(R.id.todoCheckbox) }
+        private val checkBox by lazy<CheckBox> { view.findViewById(R.id.itemCheckbox) }
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: Item) {
@@ -59,7 +59,6 @@ class ItemAdapter(
                 }
                 true
             }
-//            checkBox.setOnCheckedChangeListener { _, checked -> clickListener.invoke(item.copy(done = checked)) }
         }
     }
 }

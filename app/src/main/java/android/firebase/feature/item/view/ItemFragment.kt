@@ -29,6 +29,16 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initRecycler()
+
+        presenter.start(this)
+
+        addItemButton.setOnClickListener {
+            presenter.addItemButtonClicked()
+        }
+    }
+
+    private fun initRecycler() {
         itemAdapter = ItemAdapter(
             clickListener = { item -> presenter.onItemCheckedChange(item) }
         )
@@ -38,12 +48,6 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
             layoutManager = LinearLayoutManager(context)
             adapter = itemAdapter
         }
-
-        presenter.start(this)
-
-        addTodoButton.setOnClickListener {
-            presenter.addTodoButtonClicked()
-        }
     }
 
     override fun showNotAuthenticated() {
@@ -52,11 +56,6 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
 
     override fun showError(message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showItems(items: List<Item>) {
-        itemAdapter.items = items.toMutableList()
-        itemAdapter.notifyDataSetChanged()
     }
 
     override fun itemRemoved(item: Item) {
