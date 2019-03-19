@@ -2,14 +2,19 @@ package android.firebase.common.presentation
 
 import io.reactivex.disposables.CompositeDisposable
 
-interface BasePresenter<V> {
+abstract class BasePresenter<V> {
 
-    val disposables: CompositeDisposable
-        get() = CompositeDisposable()
+    protected val disposables = CompositeDisposable()
 
-    fun start(view: V)
+    /**
+     * view calles this when fully initialized (e.g. onViewCreated)
+     */
+    abstract fun start(view: V)
 
-    fun stop() {
+    /**
+     * view calles this before it is destroyed (e.g. onViewDestroyed)
+     */
+    open fun stop() {
         disposables.clear()
     }
 }

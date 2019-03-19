@@ -20,7 +20,7 @@ class ItemPresenter(
     private val updateItemUseCase: UpdateItemUseCase,
     private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase,
     private val shareListByEmailUseCase: ShareListByEmailUseCase
-) : BasePresenter<ItemView> {
+) : BasePresenter<ItemView>() {
 
     private lateinit var view: ItemView
     private lateinit var listId: String

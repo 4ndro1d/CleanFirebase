@@ -18,7 +18,7 @@ class ListsPresenter(
     private val loadSharedListsForUserUseCase: LoadSharedListsForUserUseCase,
     private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase,
     private val saveListUseCase: SaveListUseCase
-) : BasePresenter<ListsView> {
+) : BasePresenter<ListsView>() {
 
     lateinit var view: ListsView
 
@@ -27,7 +27,7 @@ class ListsPresenter(
 
         loadAuthenticatedUserUseCase.execute()?.uid?.let {
             disposables += loadListsForUserUseCase.execute(LoadListsForUserUseCase.Params(it))
-                .mergeWith(loadSharedListsForUserUseCase.execute(LoadSharedListsForUserUseCase.Params(it)))
+//                .mergeWith(loadSharedListsForUserUseCase.execute(LoadSharedListsForUserUseCase.Params(it)))
                 .subscribeOnIo()
                 .observeOnMain()
                 .subscribeBy(

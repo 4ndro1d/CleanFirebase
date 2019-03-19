@@ -8,7 +8,7 @@ import io.reactivex.rxkotlin.plusAssign
 class AuthPresenter(
     private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase,
     private val saveUserUseCase: SaveUserUseCase
-) : BasePresenter<AuthenticationView> {
+) : BasePresenter<AuthenticationView>() {
 
     override fun start(view: AuthenticationView) {
         if (loadAuthenticatedUserUseCase.execute() != null) {
