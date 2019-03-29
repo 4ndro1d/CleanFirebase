@@ -18,4 +18,6 @@ interface ItemView : BaseView {
     fun showError(message: String?)
 
     fun showEmailInputDialog()
+
+    fun showEditDialog(item: Item)
 }

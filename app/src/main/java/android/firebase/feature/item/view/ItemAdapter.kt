@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ItemAdapter(
+    private val checkChangedListener: (item: Item) -> Unit,
     private val clickListener: (item: Item) -> Unit,
     var items: MutableList<Item> = mutableListOf()
 ) : RecyclerView.Adapter<ItemAdapter.ItemHolder>() {
@@ -51,11 +52,16 @@ class ItemAdapter(
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: Item) {
+
+            view.setOnClickListener {
+                clickListener.invoke(item)
+            }
+
             title.text = item.title
             checkBox.isChecked = item.done
             checkBox.setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
-                    clickListener.invoke(item.copy(done = !item.done))
+                    checkChangedListener.invoke(item.copy(done = !item.done))
                 }
                 true
             }

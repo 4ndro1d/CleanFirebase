@@ -1,7 +1,6 @@
 package android.firebase.feature.item.view
 
-import android.firebase.R
-import android.firebase.common.view.recycler.DeleteTouchHelperCallback
+import android.firebase.common.view.recycler.SwipeTouchHelperCallback
 import android.firebase.feature.item.domain.model.Item
 import android.firebase.feature.item.presentation.ItemPresenter
 import android.firebase.feature.item.presentation.ItemView
@@ -49,7 +48,8 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
 
     private fun initRecycler() {
         itemAdapter = ItemAdapter(
-            clickListener = { item -> presenter.onItemCheckedChange(item) }
+            checkChangedListener = { item -> presenter.onItemCheckedChange(item) },
+            clickListener = { item -> presenter.onItemClicked(item) }
         )
 
         itemRecycler.apply {
@@ -58,10 +58,9 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
             adapter = itemAdapter
         }.also {
             ItemTouchHelper(
-                DeleteTouchHelperCallback(
-                    deleteIcon = resources.getDrawable(R.drawable.ic_add),
+                SwipeTouchHelperCallback(
                     swipeListener = { position ->
-                        presenter.removeItem(itemAdapter.items[position])
+                        presenter.itemSwiped(itemAdapter.items[position])
                     }
                 )
             ).attachToRecyclerView(it)
@@ -98,6 +97,27 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
                 setView(input)
 
                 setPositiveButton("OK") { _, _ -> presenter.addItem(input.text.toString()) }
+                setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                show()
+            }
+        }
+    }
+
+    override fun showEditDialog(item: Item) {
+        context?.let {
+            AlertDialog.Builder(it).apply {
+                setTitle("Title")
+
+                val input = EditText(context)
+                input.inputType = InputType.TYPE_CLASS_TEXT
+                input.setText(item.title)
+                setView(input)
+
+                setPositiveButton("OK") { _, _ ->
+                    presenter.updateItem(item.copy(
+                        title = input.text.toString()
+                    ))
+                }
                 setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
                 show()
             }

@@ -79,7 +79,7 @@ class ItemPresenter(
         updateItem(item)
     }
 
-    private fun updateItem(item: Item) {
+    fun updateItem(item: Item) {
         disposables += updateItemUseCase.execute(UpdateItemUseCase.Params(item))
             .subscribeOnIo()
             .observeOnMain()
@@ -104,10 +104,14 @@ class ItemPresenter(
             )
     }
 
-    fun removeItem(item: Item) {
+    fun itemSwiped(item: Item) {
         disposables += deleteItemUseCase.execute(DeleteItemUseCase.Params(item.id))
             .subscribeOnIo()
             .observeOnMain()
             .subscribe()
+    }
+
+    fun onItemClicked(item: Item) {
+        view.showEditDialog(item)
     }
 }
