@@ -11,6 +11,7 @@ import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,13 +23,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupNavigation() {
         val navController = findNavController(R.id.nav_host_fragment)
-        setupActionBarWithNavController(this, navController, drawerLayout)
+        setupActionBarWithNavController(this, navController)
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            drawerLayout.closeDrawers()
-            true
+            Timber.e("sdffdg")
+            navigate(menuItem)
         }
         setupWithNavController(navigationView, navController)
+    }
+
+    private fun navigate(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+
+            R.id.menu_logout -> navigateToLogout()
+        }
+
+        menuItem.isChecked = true
+        drawerLayout.closeDrawers()
+        return true
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -41,13 +52,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.menu_logout -> navigateToLogout()
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun navigateToLogout() {

@@ -18,8 +18,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
 import kotlinx.android.synthetic.main.fragment_items.*
 import org.koin.android.ext.android.inject
 
@@ -66,6 +68,9 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = itemAdapter
+            addItemDecoration(DividerItemDecoration(context, OrientationHelper.VERTICAL).apply {
+                setDrawable(resources.getDrawable(R.drawable.divider))
+            })
         }.also {
             ItemTouchHelper(
                 SwipeTouchHelperCallback(

@@ -15,8 +15,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
 import kotlinx.android.synthetic.main.fragment_lists.*
 import org.koin.android.ext.android.inject
 
@@ -51,13 +53,14 @@ class ListsFragment : Fragment(), ListsView {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter
+            addItemDecoration(DividerItemDecoration(context, OrientationHelper.VERTICAL).apply {
+                setDrawable(resources.getDrawable(R.drawable.divider))
+            })
         }.also {
-            ItemTouchHelper(
-                SwipeTouchHelperCallback(
-                    swipeListener = { position ->
-                        presenter.listSwiped(listAdapter.lists[position])
-                    }
-                )
+            ItemTouchHelper(SwipeTouchHelperCallback(
+                swipeListener = { position ->
+                    presenter.listSwiped(listAdapter.lists[position])
+                })
             ).attachToRecyclerView(it)
         }
     }
