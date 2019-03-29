@@ -103,6 +103,13 @@ class ListRemoteSourceImpl(
 //                ))
         }
 
+    override fun deleteList(listId: String): Completable =
+        Completable.fromAction {
+            firestore.collection(COLLECTION_LISTS)
+                .document(listId)
+                .delete()
+        }
+
     private companion object {
         const val COLLECTION_LISTS = "lists"
         const val COLLECTION_SHARED_LISTS = "sharedlists"

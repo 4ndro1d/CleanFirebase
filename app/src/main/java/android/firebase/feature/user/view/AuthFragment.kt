@@ -29,7 +29,7 @@ class AuthFragment : Fragment(), AuthenticationView {
             val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(context, "User successfully logged in", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
                 navigateToMain()
             } else {
                 response?.error?.let {
@@ -44,7 +44,7 @@ class AuthFragment : Fragment(), AuthenticationView {
     }
 
     override fun userAlreadyLoggedIn() {
-        Toast.makeText(context, "User is already logged in", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, getString(R.string.already_logged_in), Toast.LENGTH_SHORT).show()
         navigateToMain()
     }
 

@@ -2,6 +2,7 @@ package android.firebase.feature.user.view
 
 import android.app.Activity
 import android.content.Intent
+import android.firebase.R
 import android.firebase.feature.user.presentation.AuthPresenter
 import android.firebase.feature.user.presentation.AuthenticationView
 import android.firebase.main.MainActivity
@@ -28,7 +29,7 @@ class AuthActivity : AppCompatActivity(), AuthenticationView {
             val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "User successfully logged in", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, AuthActivity::class.java))
                 navigateToMain()
             } else {
@@ -48,7 +49,7 @@ class AuthActivity : AppCompatActivity(), AuthenticationView {
     }
 
     override fun userAlreadyLoggedIn() {
-        Toast.makeText(this, "User is already logged in", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.already_logged_in), Toast.LENGTH_SHORT).show()
         navigateToMain()
     }
 

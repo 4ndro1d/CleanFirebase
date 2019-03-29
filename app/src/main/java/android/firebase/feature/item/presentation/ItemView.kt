@@ -20,4 +20,6 @@ interface ItemView : BaseView {
     fun showEmailInputDialog()
 
     fun showEditDialog(item: Item)
+
+    fun showInviteError()
 }

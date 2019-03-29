@@ -16,6 +16,9 @@ class ListRepositoryImpl(
     override fun loadListsForUser(userId: String): Observable<List<ListWithState>> =
         remoteSource.loadListsForUser(userId)
 
+    override fun deleteList(listId: String): Completable =
+        remoteSource.deleteList(listId)
+
     override fun loadListsSharedWithUser(userId: String): Observable<List<ListWithState>> =
         remoteSource.loadListsSharedWithUser(userId)
 

@@ -1,5 +1,6 @@
 package android.firebase.feature.item.view
 
+import android.firebase.R
 import android.firebase.common.view.recycler.SwipeTouchHelperCallback
 import android.firebase.feature.item.domain.model.Item
 import android.firebase.feature.item.presentation.ItemPresenter
@@ -67,8 +68,12 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
         }
     }
 
+    override fun showInviteError() {
+        showError(getString(R.string.invite_error))
+    }
+
     override fun showNotAuthenticated() {
-        Toast.makeText(context, "User not authenticated", Toast.LENGTH_SHORT).show()
+        showError(getString(R.string.not_authenticated))
     }
 
     override fun showError(message: String?) {
@@ -90,14 +95,14 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
     override fun showInputDialog() {
         context?.let {
             AlertDialog.Builder(it).apply {
-                setTitle("Title")
+                setTitle(getString(R.string.title))
 
                 val input = EditText(context)
                 input.inputType = InputType.TYPE_CLASS_TEXT
                 setView(input)
 
-                setPositiveButton("OK") { _, _ -> presenter.addItem(input.text.toString()) }
-                setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                setPositiveButton(getString(R.string.ok)) { _, _ -> presenter.addItem(input.text.toString()) }
+                setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
                 show()
             }
         }
@@ -106,19 +111,19 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
     override fun showEditDialog(item: Item) {
         context?.let {
             AlertDialog.Builder(it).apply {
-                setTitle("Title")
+                setTitle(getString(R.string.title))
 
                 val input = EditText(context)
                 input.inputType = InputType.TYPE_CLASS_TEXT
                 input.setText(item.title)
                 setView(input)
 
-                setPositiveButton("OK") { _, _ ->
+                setPositiveButton(getString(R.string.ok)) { _, _ ->
                     presenter.updateItem(item.copy(
                         title = input.text.toString()
                     ))
                 }
-                setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
                 show()
             }
         }
@@ -127,14 +132,14 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
     override fun showEmailInputDialog() {
         context?.let {
             AlertDialog.Builder(it).apply {
-                setTitle("Email:")
+                setTitle(getString(R.string.email))
 
                 val input = EditText(context)
                 input.inputType = InputType.TYPE_CLASS_TEXT
                 setView(input)
 
-                setPositiveButton("OK") { _, _ -> presenter.shareByEmail(input.text.toString()) }
-                setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                setPositiveButton(getString(R.string.ok)) { _, _ -> presenter.shareByEmail(input.text.toString()) }
+                setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
                 show()
             }
         }

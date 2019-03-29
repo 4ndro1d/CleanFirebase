@@ -17,4 +17,8 @@ interface ListsView {
     fun showNotAuthenticated()
 
     fun showError(message: String?)
+
+    fun showMissingPermission()
+
+    fun showDeleteListConfirmation(myList: MyList)
 }

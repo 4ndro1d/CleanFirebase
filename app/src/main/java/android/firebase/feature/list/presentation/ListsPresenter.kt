@@ -5,6 +5,7 @@ import android.firebase.extensions.observeOnMain
 import android.firebase.extensions.subscribeOnIo
 import android.firebase.feature.list.domain.model.MyList
 import android.firebase.feature.list.domain.model.STATE
+import android.firebase.feature.list.domain.usecase.DeleteListUseCase
 import android.firebase.feature.list.domain.usecase.LoadListsForUserUseCase
 import android.firebase.feature.list.domain.usecase.LoadSharedListsForUserUseCase
 import android.firebase.feature.list.domain.usecase.SaveListUseCase
@@ -16,6 +17,7 @@ import timber.log.Timber
 class ListsPresenter(
     private val loadListsForUserUseCase: LoadListsForUserUseCase,
     private val loadSharedListsForUserUseCase: LoadSharedListsForUserUseCase,
+    private val deleteListUseCase: DeleteListUseCase,
     private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase,
     private val saveListUseCase: SaveListUseCase
 ) : BasePresenter<ListsView>() {
@@ -25,6 +27,7 @@ class ListsPresenter(
     override fun start(view: ListsView) {
         this.view = view
 
+        //TODO extract to usecase
         loadAuthenticatedUserUseCase.execute()?.uid?.let {
             disposables += loadListsForUserUseCase.execute(LoadListsForUserUseCase.Params(it))
                 .mergeWith(loadSharedListsForUserUseCase.execute(LoadSharedListsForUserUseCase.Params(it)))
@@ -37,8 +40,6 @@ class ListsPresenter(
                                 STATE.REMOVED -> view.listRemoved(withState.list)
                                 STATE.ADDED -> view.listAdded(withState.list)
                                 STATE.MODIFIED -> view.listModified(withState.list)
-                            }.also {
-                                Timber.d("onNext $withState")
                             }
                         }
                     },
@@ -57,7 +58,7 @@ class ListsPresenter(
                     .subscribeOnIo()
                     .observeOnMain()
                     .subscribeBy(
-                        onError = Timber::e
+                        onError = { e -> view.showError(e.message) }
                     )
         } ?: view.showNotAuthenticated()
     }
@@ -68,5 +69,24 @@ class ListsPresenter(
 
     fun addListButtonClicked() {
         view.showInputDialog()
+    }
+
+    fun listSwiped(myList: MyList) {
+        loadAuthenticatedUserUseCase.execute()?.uid?.let {
+            if (myList.userId == it) {
+                view.showDeleteListConfirmation(myList)
+            } else {
+                view.showMissingPermission()
+            }
+        } ?: view.showNotAuthenticated()
+    }
+
+    fun deleteList(myList: MyList) {
+        disposables += deleteListUseCase.execute(DeleteListUseCase.Params(myList.id))
+            .subscribeOnIo()
+            .observeOnMain()
+            .subscribeBy(
+                onError = { view.showError(it.message) }
+            )
     }
 }

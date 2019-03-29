@@ -1,6 +1,7 @@
 package android.firebase.feature.list.view
 
 import android.firebase.R
+import android.firebase.common.view.recycler.SwipeTouchHelperCallback
 import android.firebase.feature.list.domain.model.MyList
 import android.firebase.feature.list.presentation.ListsPresenter
 import android.firebase.feature.list.presentation.ListsView
@@ -14,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_lists.*
 import org.koin.android.ext.android.inject
@@ -48,6 +50,29 @@ class ListsFragment : Fragment(), ListsView {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter
+        }.also {
+            ItemTouchHelper(
+                SwipeTouchHelperCallback(
+                    swipeListener = { position ->
+                        presenter.listSwiped(listAdapter.lists[position])
+                    }
+                )
+            ).attachToRecyclerView(it)
+        }
+    }
+
+    override fun showMissingPermission() {
+        Toast.makeText(context, getString(R.string.missing_permission), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showDeleteListConfirmation(myList: MyList) {
+        context?.let {
+            AlertDialog.Builder(it).apply {
+                setTitle(getString(R.string.confirm_delete))
+                setPositiveButton(getString(R.string.ok)) { _, _ -> presenter.deleteList(myList) }
+                setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
+                show()
+            }
         }
     }
 
@@ -59,14 +84,14 @@ class ListsFragment : Fragment(), ListsView {
     override fun showInputDialog() {
         context?.let {
             AlertDialog.Builder(it).apply {
-                setTitle("Title")
+                setTitle(getString(R.string.title))
 
                 val input = EditText(context)
                 input.inputType = InputType.TYPE_CLASS_TEXT
                 setView(input)
 
-                setPositiveButton("OK") { _, _ -> presenter.addList(input.text.toString()) }
-                setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                setPositiveButton(getString(R.string.ok)) { _, _ -> presenter.addList(input.text.toString()) }
+                setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
                 show()
             }
         }
