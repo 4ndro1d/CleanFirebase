@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         when (item?.itemId) {
             R.id.menu_logout -> navigateToLogout()
         }
-        return true
+        return super.onOptionsItemSelected(item)
     }
 
     private fun navigateToLogout() {

@@ -8,6 +8,9 @@ import android.firebase.feature.item.presentation.ItemView
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -27,6 +30,16 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
     private val safeArgs by lazy { arguments?.let { ItemFragmentArgs.fromBundle(it) } }
     private lateinit var itemAdapter: ItemAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_items_fragment, menu)
+        return super.onCreateOptionsMenu(menu, inflater)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(android.firebase.R.layout.fragment_items, container, false)
 
@@ -40,10 +53,6 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
 
         addItemButton.setOnClickListener {
             presenter.addItemButtonClicked()
-        }
-
-        shareButton.setOnClickListener {
-            presenter.shareButtonClicked()
         }
     }
 
@@ -143,6 +152,13 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
                 show()
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_share -> presenter.shareButtonClicked()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {
