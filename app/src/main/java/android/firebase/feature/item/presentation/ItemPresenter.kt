@@ -5,6 +5,7 @@ import android.firebase.extensions.observeOnMain
 import android.firebase.extensions.subscribeOnIo
 import android.firebase.feature.item.domain.model.Item
 import android.firebase.feature.item.domain.model.STATE
+import android.firebase.feature.item.domain.usecase.DeleteItemUseCase
 import android.firebase.feature.item.domain.usecase.LoadItemsForUserUseCase
 import android.firebase.feature.item.domain.usecase.SaveItemUseCase
 import android.firebase.feature.item.domain.usecase.UpdateItemUseCase
@@ -18,6 +19,7 @@ class ItemPresenter(
     private val loadItemsForListUseCase: LoadItemsForUserUseCase,
     private val saveItemUseCase: SaveItemUseCase,
     private val updateItemUseCase: UpdateItemUseCase,
+    private val deleteItemUseCase: DeleteItemUseCase,
     private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase,
     private val shareListByEmailUseCase: ShareListByEmailUseCase
 ) : BasePresenter<ItemView>() {
@@ -100,5 +102,12 @@ class ItemPresenter(
                 },
                 onError = { view.showError(it.message) }
             )
+    }
+
+    fun removeItem(item: Item) {
+        disposables += deleteItemUseCase.execute(DeleteItemUseCase.Params(item.id))
+            .subscribeOnIo()
+            .observeOnMain()
+            .subscribe()
     }
 }

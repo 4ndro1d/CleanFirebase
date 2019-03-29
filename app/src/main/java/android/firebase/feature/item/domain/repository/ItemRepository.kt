@@ -12,4 +12,6 @@ interface ItemRepository {
     fun saveItem(item: Item): Completable
 
     fun updateItem(item: Item): Completable
+
+    fun deleteItem(itemId: String): Completable
 }

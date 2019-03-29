@@ -3,6 +3,7 @@ package android.firebase.feature.item
 import android.firebase.feature.item.data.ItemRemoteSource
 import android.firebase.feature.item.data.ItemRepositoryImpl
 import android.firebase.feature.item.domain.repository.ItemRepository
+import android.firebase.feature.item.domain.usecase.DeleteItemUseCase
 import android.firebase.feature.item.domain.usecase.LoadItemsForUserUseCase
 import android.firebase.feature.item.domain.usecase.SaveItemUseCase
 import android.firebase.feature.item.domain.usecase.UpdateItemUseCase
@@ -24,8 +25,9 @@ val itemsModule = module {
     single { LoadItemsForUserUseCase(get()) }
     single { SaveItemUseCase(get()) }
     single { UpdateItemUseCase(get()) }
+    single { DeleteItemUseCase(get()) }
     single { LoadUserByMailUseCase(get()) }
     single { ShareListByEmailUseCase(get(), get()) }
     single { ShareListWithUserUseCase(get()) }
-    single { ItemPresenter(get(), get(), get(), get(), get()) }
+    single { ItemPresenter(get(), get(), get(), get(), get(), get()) }
 }

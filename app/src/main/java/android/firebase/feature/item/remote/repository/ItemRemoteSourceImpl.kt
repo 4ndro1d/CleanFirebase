@@ -62,6 +62,13 @@ class ItemRemoteSourceImpl(
                 .set(remoteItem)
         }
 
+    override fun deleteItem(itemId: String) =
+        Completable.fromAction {
+            firestore.collection(COLLECTION_ITEMS)
+                .document(itemId)
+                .delete()
+        }
+
     override fun updateItem(item: Item) =
         Completable.fromAction {
             firestore.collection(COLLECTION_ITEMS)

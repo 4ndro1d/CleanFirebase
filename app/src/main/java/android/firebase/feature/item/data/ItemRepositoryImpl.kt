@@ -10,6 +10,9 @@ class ItemRepositoryImpl(
     override fun loadItemsForList(listId: String) =
         remoteSource.loadItemsForList(listId)
 
+    override fun deleteItem(itemId: String) =
+        remoteSource.deleteItem(itemId)
+
     override fun saveItem(item: Item) =
         remoteSource.saveItem(item)
 
