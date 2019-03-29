@@ -1,6 +1,5 @@
 package android.firebase.feature.item.presentation
 
-import android.firebase.R
 import android.firebase.common.presentation.BasePresenter
 import android.firebase.extensions.observeOnMain
 import android.firebase.extensions.subscribeOnIo
@@ -99,9 +98,11 @@ class ItemPresenter(
             .observeOnMain()
             .subscribeBy(
                 onComplete = {
-                    view.showInviteError()
+                    view.showInviteSuccess()
                 },
-                onError = { view.showError(it.message) }
+                onError = {
+                    view.showInviteError()
+                }
             )
     }
 

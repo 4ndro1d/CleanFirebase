@@ -8,8 +8,8 @@ import android.firebase.feature.list.domain.model.STATE
 import android.firebase.feature.list.remote.mapper.RemoteListWithStateMapper
 import android.firebase.feature.list.remote.model.RemoteList
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import io.reactivex.Completable
 import io.reactivex.Observable
 
@@ -98,16 +98,9 @@ class ListRemoteSourceImpl(
         Completable.fromAction {
             firestore.collection(COLLECTION_LISTS)
                 .document(listId)
-                .set(mapOf(
-                    "sharedUserIds" to listOf(userId)
-                ), SetOptions.merge())
-
-//            firestore
-//                .collection(COLLECTION_SHARED_LISTS)
-//                .add(mapOf(
-//                    "listId" to listId,
-//                    "userId" to userId
-//                ))
+                .update(
+                    "sharedUserIds", FieldValue.arrayUnion(userId)
+                )
         }
 
     override fun deleteList(listId: String): Completable =
@@ -119,6 +112,5 @@ class ListRemoteSourceImpl(
 
     private companion object {
         const val COLLECTION_LISTS = "lists"
-        const val COLLECTION_SHARED_LISTS = "sharedlists"
     }
 }

@@ -22,4 +22,6 @@ interface ItemView : BaseView {
     fun showEditDialog(item: Item)
 
     fun showInviteError()
+
+    fun showInviteSuccess()
 }

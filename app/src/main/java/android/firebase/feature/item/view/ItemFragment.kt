@@ -161,6 +161,10 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun showInviteSuccess() {
+        showError(getString(R.string.invite_success))
+    }
+
     override fun onDestroyView() {
         presenter.stop()
         super.onDestroyView()
