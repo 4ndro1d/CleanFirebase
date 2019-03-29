@@ -1,10 +1,12 @@
 package android.firebase.main
 
 import android.firebase.R
+import android.firebase.feature.list.view.ListsFragmentDirections
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -19,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNavigation() {
-        val navController = findNavController(this, R.id.nav_host_fragment)
+        val navController = findNavController(R.id.nav_host_fragment)
         setupActionBarWithNavController(this, navController, drawerLayout)
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navigateUp(findNavController(this, R.id.nav_host_fragment), drawerLayout)
+        return navigateUp(findNavController(R.id.nav_host_fragment), drawerLayout)
     }
 
     override fun onBackPressed() {
@@ -39,5 +41,18 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_logout -> navigateToLogout()
+        }
+        return true
+    }
+
+    private fun navigateToLogout() {
+        //TODO param
+        val action = ListsFragmentDirections.actionListsFragmentToAuthFragment()
+        findNavController(R.id.nav_host_fragment).navigate(action)
     }
 }

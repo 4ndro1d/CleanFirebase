@@ -11,3 +11,12 @@ exports.registerUser = functions.auth.user().onCreate((user) => {
      "email" : user.email
      })
 });
+
+exports.deleteList = functions.firestore.document('lists/{id}').onDelete((snap, context) => {
+    var query = firestore.collection('items').where('listId','==', snap.data().id);
+    query.get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+        doc.ref.delete();
+      });
+    });
+});

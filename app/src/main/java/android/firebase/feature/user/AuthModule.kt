@@ -15,5 +15,5 @@ val authModule = module {
     single<AuthRemoteSource> { AuthRemoteSourceImpl(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }
     single { LoadAuthenticatedUserUseCase(get()) }
-    single { AuthPresenter(get(), get()) }
+    single { AuthPresenter(get()) }
 }

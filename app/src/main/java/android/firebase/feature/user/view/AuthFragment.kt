@@ -30,7 +30,6 @@ class AuthFragment : Fragment(), AuthenticationView {
 
             if (resultCode == Activity.RESULT_OK) {
                 Toast.makeText(context, "User successfully logged in", Toast.LENGTH_SHORT).show()
-                presenter.addUser(response?.email)
                 navigateToMain()
             } else {
                 response?.error?.let {

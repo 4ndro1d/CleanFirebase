@@ -29,8 +29,6 @@ class AuthActivity : AppCompatActivity(), AuthenticationView {
 
             if (resultCode == Activity.RESULT_OK) {
                 Toast.makeText(this, "User successfully logged in", Toast.LENGTH_SHORT).show()
-                presenter.addUser(response?.email)
-
                 startActivity(Intent(this, AuthActivity::class.java))
                 navigateToMain()
             } else {

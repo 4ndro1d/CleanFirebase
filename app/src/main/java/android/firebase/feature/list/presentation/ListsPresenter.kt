@@ -27,7 +27,7 @@ class ListsPresenter(
 
         loadAuthenticatedUserUseCase.execute()?.uid?.let {
             disposables += loadListsForUserUseCase.execute(LoadListsForUserUseCase.Params(it))
-//                .mergeWith(loadSharedListsForUserUseCase.execute(LoadSharedListsForUserUseCase.Params(it)))
+                .mergeWith(loadSharedListsForUserUseCase.execute(LoadSharedListsForUserUseCase.Params(it)))
                 .subscribeOnIo()
                 .observeOnMain()
                 .subscribeBy(
@@ -67,7 +67,6 @@ class ListsPresenter(
     }
 
     fun addListButtonClicked() {
-        Timber.d("Button clicked")
         view.showInputDialog()
     }
 }

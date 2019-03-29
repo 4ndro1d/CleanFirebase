@@ -10,9 +10,9 @@ interface ListsView {
 
     fun listRemoved(list: MyList)
 
-    fun listAdded(item: MyList)
+    fun listAdded(list: MyList)
 
-    fun listModified(item: MyList)
+    fun listModified(list: MyList)
 
     fun showNotAuthenticated()
 

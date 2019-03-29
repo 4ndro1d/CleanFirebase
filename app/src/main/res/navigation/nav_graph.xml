@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/authFragment">
+    app:startDestination="@id/listsFragment">
 
     <fragment
         android:id="@+id/listsFragment"
@@ -12,6 +12,17 @@
         <action
             android:id="@+id/action_listsFragment_to_itemsFragment"
             app:destination="@id/itemsFragment" />
+
+        <action
+            android:id="@+id/action_listsFragment_to_authFragment"
+            app:destination="@id/authFragment">
+
+            <argument
+                android:name="forceLogout"
+                android:defaultValue="false"
+                app:argType="boolean" />
+
+        </action>
 
     </fragment>
 
@@ -34,6 +45,11 @@
         android:id="@+id/authFragment"
         android:name="android.firebase.feature.user.view.AuthFragment"
         android:label="Login">
+
+        <argument
+            android:name="forceLogout"
+            android:defaultValue="false"
+            app:argType="boolean" />
 
         <action
             android:id="@+id/action_authFragment_to_listsFragment"

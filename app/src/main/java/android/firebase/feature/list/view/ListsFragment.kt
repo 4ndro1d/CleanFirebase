@@ -13,7 +13,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_lists.*
 import org.koin.android.ext.android.inject
@@ -53,7 +53,7 @@ class ListsFragment : Fragment(), ListsView {
 
     override fun navigateToItemsForList(listId: String, title: String) {
         val action = ListsFragmentDirections.actionListsFragmentToItemsFragment(listId, title)
-        view?.findNavController()?.navigate(action)
+        findNavController().navigate(action)
     }
 
     override fun showInputDialog() {
@@ -85,7 +85,7 @@ class ListsFragment : Fragment(), ListsView {
     }
 
     override fun showNotAuthenticated() {
-        Toast.makeText(context, "User not authenticated", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_listsFragment_to_authFragment)
     }
 
     override fun showError(message: String?) {
