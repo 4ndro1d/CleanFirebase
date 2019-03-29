@@ -43,7 +43,8 @@ class ListsFragment : Fragment(), ListsView {
 
     private fun initRecycler() {
         listAdapter = ListAdapter(
-            clickListener = { list -> presenter.onListClicked(list) }
+            clickListener = { list -> presenter.onListClicked(list) },
+            longClickListener = { list -> presenter.onListLongClicked(list) }
         )
 
         listRecycler.apply {
@@ -58,6 +59,27 @@ class ListsFragment : Fragment(), ListsView {
                     }
                 )
             ).attachToRecyclerView(it)
+        }
+    }
+
+    override fun showEditDialog(list: MyList) {
+        context?.let {
+            AlertDialog.Builder(it).apply {
+                setTitle(getString(R.string.title))
+
+                val input = EditText(context)
+                input.inputType = InputType.TYPE_CLASS_TEXT
+                input.setText(list.title)
+                setView(input)
+
+                setPositiveButton(getString(R.string.ok)) { _, _ ->
+                    presenter.updateList(list.copy(
+                        title = input.text.toString()
+                    ))
+                }
+                setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
+                show()
+            }
         }
     }
 

@@ -43,6 +43,13 @@ class ListRemoteSourceImpl(
             emitter.setCancellable { listenerRegistration.remove() }
         }
 
+    override fun updateList(list: MyList): Completable =
+        Completable.fromAction {
+            firestore.collection(COLLECTION_LISTS)
+                .document(list.id)
+                .set(list)
+        }
+
     private fun mapToListWithState(documentChange: DocumentChange, state: STATE): ListWithState =
         listWithStateMapper.map(
             Pair(listMapper.from(

@@ -16,4 +16,6 @@ interface ListRepository {
     fun shareListWithUser(listId: String, userId: String): Completable
 
     fun deleteList(listId: String): Completable
+
+    fun updateList(list: MyList): Completable
 }

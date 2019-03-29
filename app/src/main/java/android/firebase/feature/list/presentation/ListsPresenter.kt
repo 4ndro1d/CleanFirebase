@@ -9,6 +9,7 @@ import android.firebase.feature.list.domain.usecase.DeleteListUseCase
 import android.firebase.feature.list.domain.usecase.LoadListsForUserUseCase
 import android.firebase.feature.list.domain.usecase.LoadSharedListsForUserUseCase
 import android.firebase.feature.list.domain.usecase.SaveListUseCase
+import android.firebase.feature.list.domain.usecase.UpdateListUseCase
 import android.firebase.feature.user.domain.usecase.LoadAuthenticatedUserUseCase
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -18,6 +19,7 @@ class ListsPresenter(
     private val loadListsForUserUseCase: LoadListsForUserUseCase,
     private val loadSharedListsForUserUseCase: LoadSharedListsForUserUseCase,
     private val deleteListUseCase: DeleteListUseCase,
+    private val updateListUseCase: UpdateListUseCase,
     private val loadAuthenticatedUserUseCase: LoadAuthenticatedUserUseCase,
     private val saveListUseCase: SaveListUseCase
 ) : BasePresenter<ListsView>() {
@@ -83,6 +85,19 @@ class ListsPresenter(
 
     fun deleteList(myList: MyList) {
         disposables += deleteListUseCase.execute(DeleteListUseCase.Params(myList.id))
+            .subscribeOnIo()
+            .observeOnMain()
+            .subscribeBy(
+                onError = { view.showError(it.message) }
+            )
+    }
+
+    fun onListLongClicked(list: MyList) {
+        view.showEditDialog(list)
+    }
+
+    fun updateList(list: MyList) {
+        disposables += updateListUseCase.execute(UpdateListUseCase.Params(list))
             .subscribeOnIo()
             .observeOnMain()
             .subscribeBy(

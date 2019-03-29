@@ -21,4 +21,6 @@ interface ListsView {
     fun showMissingPermission()
 
     fun showDeleteListConfirmation(myList: MyList)
+
+    fun showEditDialog(list: MyList)
 }

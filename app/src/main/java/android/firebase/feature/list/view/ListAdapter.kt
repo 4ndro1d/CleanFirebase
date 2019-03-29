@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ListAdapter(
     private val clickListener: (list: MyList) -> Unit,
+    private val longClickListener: (list: MyList) -> Unit,
     var lists: MutableList<MyList> = mutableListOf()
 ) : RecyclerView.Adapter<ListAdapter.ListHolder>() {
 
@@ -47,6 +48,11 @@ class ListAdapter(
         fun bind(list: MyList) {
             itemView.setOnClickListener {
                 clickListener.invoke(list)
+            }
+
+            itemView.setOnLongClickListener {
+                longClickListener.invoke(list)
+                true
             }
 
             title.text = list.title

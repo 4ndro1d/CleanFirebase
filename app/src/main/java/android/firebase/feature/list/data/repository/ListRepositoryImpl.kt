@@ -22,6 +22,9 @@ class ListRepositoryImpl(
     override fun loadListsSharedWithUser(userId: String): Observable<List<ListWithState>> =
         remoteSource.loadListsSharedWithUser(userId)
 
+    override fun updateList(list: MyList): Completable =
+        remoteSource.updateList(list)
+
     override fun shareListWithUser(listId: String, userId: String): Completable =
         remoteSource.shareListWithUser(listId, userId)
 }
