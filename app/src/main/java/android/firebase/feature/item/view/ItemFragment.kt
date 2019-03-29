@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -54,8 +55,12 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
         presenter.start(this)
 
         addItemButton.setOnClickListener {
-            presenter.addItemButtonClicked()
+            presenter.addItemButtonClicked(titleEditText.text.toString())
         }
+    }
+
+    override fun showMissingInput() {
+        showError(getString(R.string.missing_input))
     }
 
     private fun initRecycler() {
@@ -69,7 +74,7 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
             layoutManager = LinearLayoutManager(context)
             adapter = itemAdapter
             addItemDecoration(DividerItemDecoration(context, OrientationHelper.VERTICAL).apply {
-                setDrawable(resources.getDrawable(R.drawable.divider))
+                ContextCompat.getDrawable(context, R.drawable.divider)
             })
         }.also {
             ItemTouchHelper(
@@ -106,20 +111,8 @@ class ItemFragment : Fragment(), ItemView, LifecycleOwner {
         itemAdapter.modifyItem(item)
     }
 
-    override fun showInputDialog() {
-        context?.let {
-            AlertDialog.Builder(it).apply {
-                setTitle(getString(R.string.title))
-
-                val input = EditText(context)
-                input.inputType = InputType.TYPE_CLASS_TEXT
-                setView(input)
-
-                setPositiveButton(getString(R.string.ok)) { _, _ -> presenter.addItem(input.text.toString()) }
-                setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
-                show()
-            }
-        }
+    override fun clearInput() {
+        titleEditText.text.clear()
     }
 
     override fun showEditDialog(item: Item) {

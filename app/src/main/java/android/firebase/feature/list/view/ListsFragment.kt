@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -39,7 +40,7 @@ class ListsFragment : Fragment(), ListsView {
         presenter.start(this)
 
         addListButton.setOnClickListener {
-            presenter.addListButtonClicked()
+            presenter.addListButtonClicked(titleEditText.text.toString())
         }
     }
 
@@ -54,7 +55,7 @@ class ListsFragment : Fragment(), ListsView {
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter
             addItemDecoration(DividerItemDecoration(context, OrientationHelper.VERTICAL).apply {
-                setDrawable(resources.getDrawable(R.drawable.divider))
+                ContextCompat.getDrawable(context, R.drawable.divider)
             })
         }.also {
             ItemTouchHelper(SwipeTouchHelperCallback(
@@ -106,20 +107,8 @@ class ListsFragment : Fragment(), ListsView {
         findNavController().navigate(action)
     }
 
-    override fun showInputDialog() {
-        context?.let {
-            AlertDialog.Builder(it).apply {
-                setTitle(getString(R.string.title))
-
-                val input = EditText(context)
-                input.inputType = InputType.TYPE_CLASS_TEXT
-                setView(input)
-
-                setPositiveButton(getString(R.string.ok)) { _, _ -> presenter.addList(input.text.toString()) }
-                setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
-                show()
-            }
-        }
+    override fun clearInput() {
+        titleEditText.text.clear()
     }
 
     override fun listRemoved(list: MyList) {

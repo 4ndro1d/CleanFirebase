@@ -6,8 +6,6 @@ interface ListsView {
 
     fun navigateToItemsForList(listId: String, title: String)
 
-    fun showInputDialog()
-
     fun listRemoved(list: MyList)
 
     fun listAdded(list: MyList)
@@ -23,4 +21,6 @@ interface ListsView {
     fun showDeleteListConfirmation(myList: MyList)
 
     fun showEditDialog(list: MyList)
+
+    fun clearInput()
 }

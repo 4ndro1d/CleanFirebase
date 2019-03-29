@@ -56,23 +56,24 @@ class ItemPresenter(
         }
     }
 
-    fun addItemButtonClicked() {
-        view.showInputDialog()
-    }
-
-    fun addItem(title: String) {
-        loadAuthenticatedUserUseCase.execute()?.uid?.let {
-            disposables +=
-                saveItemUseCase.execute(SaveItemUseCase.Params(
-                    Item(title = title,
-                        listId = listId,
-                        userId = it)))
-                    .subscribeOnIo()
-                    .observeOnMain()
-                    .subscribeBy(
-                        onError = Timber::e
-                    )
-        } ?: view.showNotAuthenticated()
+    fun addItemButtonClicked(title: String) {
+        if (title.isEmpty()) {
+            view.showMissingInput()
+        } else {
+            loadAuthenticatedUserUseCase.execute()?.uid?.let {
+                disposables +=
+                    saveItemUseCase.execute(SaveItemUseCase.Params(
+                        Item(title = title,
+                            listId = listId,
+                            userId = it)))
+                        .subscribeOnIo()
+                        .observeOnMain()
+                        .subscribeBy(
+                            onComplete = { view.clearInput() },
+                            onError = Timber::e
+                        )
+            } ?: view.showNotAuthenticated()
+        }
     }
 
     fun onItemCheckedChange(item: Item) {

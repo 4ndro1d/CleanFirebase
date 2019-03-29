@@ -53,13 +53,14 @@ class ListsPresenter(
         } ?: view.showNotAuthenticated()
     }
 
-    fun addList(title: String) {
+    fun addListButtonClicked(title: String) {
         loadAuthenticatedUserUseCase.execute()?.uid?.let {
             disposables +=
                 saveListUseCase.execute(SaveListUseCase.Params(MyList(title = title, userId = it)))
                     .subscribeOnIo()
                     .observeOnMain()
                     .subscribeBy(
+                        onComplete = { view.clearInput() },
                         onError = { e -> view.showError(e.message) }
                     )
         } ?: view.showNotAuthenticated()
@@ -67,10 +68,6 @@ class ListsPresenter(
 
     fun onListClicked(list: MyList) {
         view.navigateToItemsForList(list.id, list.title)
-    }
-
-    fun addListButtonClicked() {
-        view.showInputDialog()
     }
 
     fun listSwiped(myList: MyList) {

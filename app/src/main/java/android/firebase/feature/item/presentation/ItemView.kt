@@ -5,8 +5,6 @@ import android.firebase.feature.item.domain.model.Item
 
 interface ItemView : BaseView {
 
-    fun showInputDialog()
-
     fun itemRemoved(item: Item)
 
     fun itemAdded(item: Item)
@@ -24,4 +22,8 @@ interface ItemView : BaseView {
     fun showInviteError()
 
     fun showInviteSuccess()
+
+    fun showMissingInput()
+
+    fun clearInput()
 }
